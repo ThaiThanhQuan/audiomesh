@@ -1,0 +1,13 @@
+import ThemeRegistry from '@/components/theme-registry/theme.registry';
+
+export default function RootLayout(props: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <ThemeRegistry>
+          {props.children}
+        </ThemeRegistry>
+      </body>
+    </html >
+  );
+}
