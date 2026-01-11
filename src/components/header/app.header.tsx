@@ -16,6 +16,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Avatar, Container } from '@mui/material';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -58,6 +60,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+    const router = useRouter()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -82,6 +85,10 @@ export default function AppHeader() {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+    const handleRedirectHome = () => {
+        router.push('/')
+    }
+
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
         <Menu
@@ -93,8 +100,17 @@ export default function AppHeader() {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Link
+                    href={'/profile'}
+                    style={{
+                        color: 'unset',
+                        textDecoration: 'unset'
+                    }}>
+                    Profile
+                </Link>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
         </Menu>
     );
 
@@ -162,9 +178,13 @@ export default function AppHeader() {
                             variant="h6"
                             noWrap
                             component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' } }}
+                            sx={{
+                                display: { xs: 'none', sm: 'block' },
+                                cursor: 'pointer'
+                            }}
+                            onClick={() => handleRedirectHome()}
                         >
-                            SOUNDCLOUD
+                            SoundCloudify
                         </Typography>
                         <Search>
                             <SearchIconWrapper>
@@ -180,10 +200,14 @@ export default function AppHeader() {
                             display: { xs: 'none', md: 'flex' },
                             alignItems: 'center',
                             gap: '25px',
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            "> a": {
+                                color: 'unset',
+                                textDecoration: 'unset'
+                            }
                         }}>
-                            <span>Playlists</span>
-                            <span>Likes</span>
+                            <Link href={'/playlist'}>Playlists</Link>
+                            <Link href={'/like'}>Likes</Link>
                             <span>Upload</span>
                             <Avatar onClick={handleProfileMenuOpen}>QT</Avatar>
                         </Box>
