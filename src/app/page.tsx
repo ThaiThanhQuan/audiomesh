@@ -1,9 +1,10 @@
-import AppHeader from "@/components/header/app.header";
+import MainSlider from "@/components/main/main.slider";
+import { Container } from "@mui/material";
 
 export default function Home() {
   return (
-    <div>
-      <h1>Home page</h1>
-    </div>
+    <Container>
+      <MainSlider />
+    </Container>
   );
 }
