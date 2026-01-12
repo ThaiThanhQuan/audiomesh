@@ -5,6 +5,8 @@ export default function Home() {
   return (
     <Container>
       <MainSlider />
+      <MainSlider />
+      <MainSlider />
     </Container>
   );
 }
