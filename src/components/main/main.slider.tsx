@@ -6,6 +6,7 @@ import { Settings } from "react-slick";
 import { Box, Button } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Link from "next/link";
 
 interface IProps {
     data: ITrackTop[]
@@ -17,7 +18,7 @@ const MainSlider = (props: IProps) => {
 
     const PrevArrow = (props: any) => {
         return (
-            <Button variant="outlined"
+            <Button
                 onClick={() => props.onClick()}
                 sx={{
                     position: "absolute",
@@ -55,7 +56,7 @@ const MainSlider = (props: IProps) => {
 
     const NextArrow = (props: any) => {
         return (
-            <Button variant="outlined"
+            <Button
                 onClick={() => props.onClick()}
                 sx={{
                     position: "absolute",
@@ -114,15 +115,10 @@ const MainSlider = (props: IProps) => {
                     borderRadius: '6px',
                 },
 
-                '& .track h4': {
-                    margin: '4px 0',
-                    fontSize: '14px',
+                '& .track h3': {
+                    margin: '0',
+                    fontSize: '15px',
                     color: '#fff',
-                },
-
-                '& .track h4:last-child': {
-                    color: '#aaa',
-                    fontSize: '12px',
                 },
             }}
             >
@@ -132,7 +128,7 @@ const MainSlider = (props: IProps) => {
                         return (
                             <div className="track" key={track._id}>
                                 <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`} />
-                                <h4>{track.title}</h4>
+                                <Link href={`/track/${track._id}?audio=${track.trackUrl}`}><h3>{track.title}</h3></Link>
                                 <h4>{track.description}</h4>
                             </div>
                         )
