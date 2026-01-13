@@ -17,7 +17,7 @@ const MainSlider = (props: IProps) => {
 
     const PrevArrow = (props: any) => {
         return (
-            <Button
+            <Button variant="outlined"
                 onClick={() => props.onClick()}
                 sx={{
                     position: "absolute",

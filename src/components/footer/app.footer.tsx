@@ -33,7 +33,7 @@ const AppFooter = () => {
                     volume={1}
                     style={{
                         boxShadow: 'unset',
-                        backgroundColor: '#303030',
+                        backgroundColor: 'transparent',
                     }}
                 />
                 <div style={{
