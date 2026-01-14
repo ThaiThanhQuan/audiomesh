@@ -1,48 +1,56 @@
 'use client'
+import { useWavesurfer } from "@/utils/customHook"
 import { useSearchParams } from "next/navigation"
-import { useEffect, useRef, useState, useMemo } from "react"
-import WaveSurfer from "wavesurfer.js"
-
-const useWavesurfer = (containerRef: any, options: any) => {
-    const [wavesurfer, setWavesurfer] = useState<any>(null)
-
-    useEffect(() => {
-        if (!containerRef.current) return
-
-        const ws = WaveSurfer.create({
-            ...options,
-            container: containerRef.current,
-        })
-
-        setWavesurfer(ws)
-
-        return () => {
-            ws.destroy()
-        }
-    }, [containerRef, options])
-
-    return wavesurfer
-}
+import { useRef, useMemo, useState, useEffect, useCallback } from "react"
+import { WaveSurferOptions } from "wavesurfer.js"
 
 
 const WaveTrack = () => {
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio')
+    const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
     const containerRef = useRef<HTMLDivElement>(null)
 
-    const optionsMemo = useMemo(() => {
+    const optionsMemo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
         return {
             waveColor: '#dcd0ce',
             progressColor: '#db3d0f',
+            barWidth: 2,
             url: `/api?audio=${fileName}`,
         }
     }, [])
 
     const wavesurfer = useWavesurfer(containerRef, optionsMemo)
 
+    useEffect(() => {
+        if (!wavesurfer) return
+
+        setIsPlaying(false)
+
+        const subscriptions = [
+            wavesurfer.on('play', () => setIsPlaying(true)),
+            wavesurfer.on('pause', () => setIsPlaying(false)),
+        ]
+
+        return () => {
+            subscriptions.forEach((unsub) => unsub())
+        }
+    }, [wavesurfer])
+
+    const onPlayClick = useCallback(() => {
+        wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+    }, [wavesurfer])
+
     return (
-        <div ref={containerRef}>Wave track</div>
+        <div ref={containerRef}>
+            Wave track
+            <div>
+                <button onClick={() => onPlayClick()}>
+                    {isPlaying === true ? 'Pause' : 'Play'}
+                </button>
+            </div>
+        </div>
     )
 }
 

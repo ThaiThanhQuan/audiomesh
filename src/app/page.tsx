@@ -1,8 +1,6 @@
 import MainSlider from "@/components/main/main.slider";
 import { Container } from "@mui/material";
-import { sendRequestJS } from '@/utils/old.api'
 import { sendRequest } from "@/utils/api";
-import { send } from "process";
 
 export default async function Home() {
 
