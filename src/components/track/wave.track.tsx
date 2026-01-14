@@ -1,25 +1,48 @@
 'use client'
-import { useEffect, useRef } from "react"
+import { useSearchParams } from "next/navigation"
+import { useEffect, useRef, useState, useMemo } from "react"
 import WaveSurfer from "wavesurfer.js"
 
-const WaveTrack = () => {
-
-    const containerRed = useRef<HTMLDivElement>(null)
+const useWavesurfer = (containerRef: any, options: any) => {
+    const [wavesurfer, setWavesurfer] = useState<any>(null)
 
     useEffect(() => {
-        if (containerRed.current) {
-            WaveSurfer.create({
-                container: containerRed.current,
-                waveColor: '#dcd0ce',
-                progressColor: '#db3d0f',
-                url: '/audio/laviai.mp3',
-            })
-        }
+        if (!containerRef.current) return
 
+        const ws = WaveSurfer.create({
+            ...options,
+            container: containerRef.current,
+        })
+
+        setWavesurfer(ws)
+
+        return () => {
+            ws.destroy()
+        }
+    }, [containerRef, options])
+
+    return wavesurfer
+}
+
+
+const WaveTrack = () => {
+    const searchParams = useSearchParams()
+    const fileName = searchParams.get('audio')
+
+    const containerRef = useRef<HTMLDivElement>(null)
+
+    const optionsMemo = useMemo(() => {
+        return {
+            waveColor: '#dcd0ce',
+            progressColor: '#db3d0f',
+            url: `/api?audio=${fileName}`,
+        }
     }, [])
 
+    const wavesurfer = useWavesurfer(containerRef, optionsMemo)
+
     return (
-        <div ref={containerRed}>Wave track</div>
+        <div ref={containerRef}>Wave track</div>
     )
 }
 

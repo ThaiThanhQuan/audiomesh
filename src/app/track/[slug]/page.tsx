@@ -8,7 +8,6 @@ const DetailTrackPage = (props: any) => {
     const { params } = props
 
     const search = searchParams.get('audio')
-    console.log('check search: ', search)
     return (
         <div>
             <h1>Track paddingLeft</h1>
