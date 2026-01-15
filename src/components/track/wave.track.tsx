@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation"
 import { useRef, useMemo, useState, useEffect, useCallback } from "react"
 import { WaveSurferOptions } from "wavesurfer.js"
 import './wave.scss'
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
 const WaveTrack = () => {
     const searchParams = useSearchParams()
@@ -22,27 +24,27 @@ const WaveTrack = () => {
             const ctx = canvas.getContext('2d')!
 
             gradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 1)
-            gradient.addColorStop(0, '#656666')
-            gradient.addColorStop((canvas.height * 0.7) / canvas.height, '#656666')
-            gradient.addColorStop((canvas.height * 0.7 + 1) / canvas.height, '#ffffff')
-            gradient.addColorStop((canvas.height * 0.7 + 2) / canvas.height, '#ffffff')
-            gradient.addColorStop((canvas.height * 0.7 + 3) / canvas.height, '#B1B1B1')
-            gradient.addColorStop(1, '#B1B1B1')
+            gradient.addColorStop(0, '#2A2E2B')
+            gradient.addColorStop((canvas.height * 0.7) / canvas.height, '#3A3F3C')
+            gradient.addColorStop((canvas.height * 0.7 + 1) / canvas.height, '#CDEED8')
+            gradient.addColorStop((canvas.height * 0.7 + 2) / canvas.height, '#E6F6EE')
+            gradient.addColorStop((canvas.height * 0.7 + 3) / canvas.height, '#9FD8B6')
+            gradient.addColorStop(1, '#5E7F6E')
 
             progressGradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 1)
-            progressGradient.addColorStop(0, '#EE772F')
-            progressGradient.addColorStop((canvas.height * 0.7) / canvas.height, '#EB4926')
-            progressGradient.addColorStop((canvas.height * 0.7 + 1) / canvas.height, '#ffffff')
-            progressGradient.addColorStop((canvas.height * 0.7 + 2) / canvas.height, '#ffffff')
-            progressGradient.addColorStop((canvas.height * 0.7 + 3) / canvas.height, '#F6B094')
-            progressGradient.addColorStop(1, '#F6B094')
+            progressGradient.addColorStop(0, '#1ED760')
+            progressGradient.addColorStop((canvas.height * 0.7) / canvas.height, '#1DB954')
+            progressGradient.addColorStop((canvas.height * 0.7 + 1) / canvas.height, '#DFF8EA')
+            progressGradient.addColorStop((canvas.height * 0.7 + 2) / canvas.height, '#F1FFF8')
+            progressGradient.addColorStop((canvas.height * 0.7 + 3) / canvas.height, '#8EE6B1')
+            progressGradient.addColorStop(1, '#1AAE55')
         }
 
         return {
             waveColor: gradient,
             progressColor: progressGradient,
-            height: 150,
-            barWidth: 2,
+            height: 100,
+            barWidth: 3,
             url: `/api?audio=${fileName}`,
         }
     }, [])
@@ -66,6 +68,9 @@ const WaveTrack = () => {
             }),
             wavesurfer.on('timeupdate', (currentTime: number) => {
                 setTime(formatTime(currentTime))
+            }),
+            wavesurfer.on('click', () => {
+                wavesurfer.play()
             })
         ]
 
@@ -87,17 +92,32 @@ const WaveTrack = () => {
 
 
     return (
-        <div style={{ marginTop: 100 }}>
-            <div ref={containerRef} className="waveform">
-                <div className="time">{time}</div>
-                <div className="duration">{duration}</div>
-                <div className="hover-wave" ref={hoverRef}></div>
+        <div className="container">
+            <div className="song">
+                <div className="song-control">
+                    <div className="song-btn" onClick={() => onPlayClick()}>
+                        {isPlaying === true ? <PauseCircleIcon className="icon" /> : <PlayCircleIcon className="icon" />}
+                    </div>
+                    <div className="song-info">
+                        <h1 className="song-name">LAVIAI</h1>
+                        <h4 className="song-author">QUANTHAI Ft. Hieuthuhai </h4>
+                    </div>
+                </div>
+
+                <div className="song-img">
+                    <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/quanthai.png`} alt="song-img" />
+                </div>
+
             </div>
 
-            <div>
-                <button onClick={() => onPlayClick()}>
-                    {isPlaying === true ? 'Pause' : 'Play'}
-                </button>
+
+            <div className="audio">
+                <div ref={containerRef} className="waveform">
+                    <div className="time">{time}</div>
+                    <div className="duration">{duration}</div>
+                    <div className="hover-wave" ref={hoverRef}></div>
+                    <div className="overlay"></div>
+                </div>
             </div>
         </div>
     )
