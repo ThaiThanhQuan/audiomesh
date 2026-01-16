@@ -135,66 +135,65 @@ const WaveTrack = () => {
                     </div>
                 </div>
 
-                <div className="song-img">
-                    <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/quanthai.png`} alt="song-img" />
-                </div>
+                <div className="audio">
+                    <div ref={containerRef} className="waveform">
+                        <div className="time">{time}</div>
+                        <div className="duration">{duration}</div>
+                        <div className="hover-wave" ref={hoverRef}></div>
+                        <div className="overlay"></div>
 
-            </div>
-
-
-            <div className="audio">
-                <div ref={containerRef} className="waveform">
-                    <div className="time">{time}</div>
-                    <div className="duration">{duration}</div>
-                    <div className="hover-wave" ref={hoverRef}></div>
-                    <div className="overlay"></div>
-
-                    <div className="comments" style={{ position: 'relative' }}>
-                        {arrComments.map((comments) => {
-                            return (
-                                <Tooltip
-                                    slotProps={{
-                                        tooltip: {
-                                            sx: {
-                                                backgroundColor: 'rgba(0,0,0,0.8)',
-                                                color: '#fff',
-                                                padding: '6px 10px',
-                                                borderRadius: '6px',
-                                            },
-                                        }, popper: {
-                                            modifiers: [
-                                                {
-                                                    name: 'offset',
-                                                    options: {
-                                                        offset: [0, -10],
-                                                    },
+                        <div className="comments" style={{ position: 'relative' }}>
+                            {arrComments.map((comments) => {
+                                return (
+                                    <Tooltip
+                                        slotProps={{
+                                            tooltip: {
+                                                sx: {
+                                                    backgroundColor: 'rgba(0,0,0,0.8)',
+                                                    color: '#fff',
+                                                    padding: '6px 10px',
+                                                    borderRadius: '6px',
                                                 },
-                                            ],
-                                        },
-                                    }}
-                                    title="Laviai">
-                                    <img
-                                        onPointerMove={(e) => {
-                                            const hover = hoverRef.current!
-                                            hover.style.width = calLeft(comments.moment + 3)
+                                            }, popper: {
+                                                modifiers: [
+                                                    {
+                                                        name: 'offset',
+                                                        options: {
+                                                            offset: [0, -10],
+                                                        },
+                                                    },
+                                                ],
+                                            },
                                         }}
-                                        key={comments.id}
-                                        style={{
-                                            width: 30,
-                                            height: 30,
-                                            borderRadius: "50%",
-                                            objectFit: "cover",
-                                            position: "absolute",
-                                            top: 70,
-                                            zIndex: 10,
-                                            left: calLeft(comments.moment)
-                                        }} src={comments.avatar} />
-                                </Tooltip>
-                            )
-                        })}
+                                        title="Laviai">
+                                        <img
+                                            onPointerMove={(e) => {
+                                                const hover = hoverRef.current!
+                                                hover.style.width = calLeft(comments.moment + 3)
+                                            }}
+                                            key={comments.id}
+                                            style={{
+                                                width: 30,
+                                                height: 30,
+                                                borderRadius: "50%",
+                                                objectFit: "cover",
+                                                position: "absolute",
+                                                top: 70,
+                                                zIndex: 10,
+                                                left: calLeft(comments.moment)
+                                            }} src={comments.avatar} />
+                                    </Tooltip>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div className="song-img">
+                <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/quanthai.png`} alt="song-img" />
+            </div>
+
         </div >
     )
 }
