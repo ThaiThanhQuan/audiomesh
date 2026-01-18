@@ -62,6 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function AppHeader() {
     const { data: session } = useSession()
+    console.log('HEADER SESSION', session)
 
     const router = useRouter()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -113,7 +114,7 @@ export default function AppHeader() {
                     Profile
                 </Link>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            <MenuItem onClick={() => { handleMenuClose(), signOut() }}>Logout</MenuItem>
         </Menu>
     );
 
@@ -216,11 +217,9 @@ export default function AppHeader() {
                                 <Avatar onClick={handleProfileMenuOpen}>QT</Avatar>
                             </> :
                                 <>
-                                    <Link href={'/api/auth/signin'}>Login</Link>
+                                    <Link href={'#'} onClick={() => signIn()}>Login</Link>
                                 </>
-
                             }
-
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
@@ -239,6 +238,6 @@ export default function AppHeader() {
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
-        </Box>
+        </Box >
     );
 }
