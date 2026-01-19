@@ -2,10 +2,33 @@ import { sendRequest } from "@/utils/api"
 import NextAuth, { AuthOptions } from "next-auth"
 import { JWT } from "next-auth/jwt"
 import GithubProvider from "next-auth/providers/github"
+import CredentialsProvider from "next-auth/providers/credentials"
+
 
 export const authOptions: AuthOptions = {
     secret: process.env.NO_SECRET,
     providers: [
+        CredentialsProvider({
+            name: 'SoundCloudify',
+            credentials: {
+                username: { label: "Username", type: "text" },
+                password: { label: "Password", type: "password" }
+            },
+            async authorize(credentials, req) {
+                const res = await sendRequest<IBackendRes<JWT>>({
+                    url: 'http://localhost:8000/api/v1/auth/login',
+                    method: 'post',
+                    body: {
+                        username: credentials?.username,
+                        password: credentials?.password
+                    }
+                })
+                if (res && res.data) {
+                    return res.data as any
+                }
+                return null
+            }
+        }),
         GithubProvider({
             clientId: process.env.GITHUB_ID!,
             clientSecret: process.env.GITHUB_SECRET!,
@@ -13,12 +36,12 @@ export const authOptions: AuthOptions = {
     ],
     callbacks: {
         async jwt({ token, trigger, user, account, profile, }) {
-            if (trigger === 'signIn' && account?.provider === 'github') {
+            if (trigger === 'signIn' && account?.provider !== 'credentials') {
                 const res = await sendRequest<IBackendRes<JWT>>({
                     url: 'http://localhost:8000/api/v1/auth/social-media',
                     method: 'post',
                     body: {
-                        type: 'GITHUB',
+                        type: account?.provider?.toUpperCase(),
                         username: user.email,
                     }
                 })
@@ -27,6 +50,15 @@ export const authOptions: AuthOptions = {
                     token.refresh_token = res.data.refresh_token
                     token.user = res.data.user
                 }
+            }
+
+            if (trigger === 'signIn' && account?.provider === 'credentials') {
+                // @ts-ignore
+                token.access_token = user.access_token
+                // @ts-ignore
+                token.refresh_token = user.refresh_token
+                // @ts-ignore
+                token.user = user.user
             }
             return token
         },
