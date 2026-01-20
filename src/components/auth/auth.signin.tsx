@@ -5,6 +5,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useState } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 const AuthSignIn = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -54,17 +55,19 @@ const AuthSignIn = () => {
                     paddingTop: '100px'
                 }}>
                 <Grid
-                    size={{ xs: 12, sm: 8, md: 5, lg: 4 }}
+                    size={{ xs: 10, sm: 8, md: 5, lg: 4 }}
                 >
                     <div style={{
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}>
-                        <div style={{
+                        <Link href={'/'} style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '10px',
+                            gap: '5px',
+                            textDecoration: 'none',
+                            color: '#fff'
                         }}>
                             <img
                                 style={{
@@ -73,14 +76,14 @@ const AuthSignIn = () => {
                                     objectFit: 'contain',
                                     borderRadius: '6px',
                                 }}
-                                src="/logo.png"
+                                src="/soundcloudify_logo.png"
                                 alt="SoundCloudify logo" />
                             <h3 style={{
                                 margin: 0,
                                 fontSize: 25,
                                 fontWeight: 600
                             }}>SoundCloudify</h3>
-                        </div>
+                        </Link>
                         <h1 style={{
                             margin: '15px 0',
                             fontSize: 32,
@@ -214,7 +217,7 @@ const AuthSignIn = () => {
                             justifyContent: 'center',
                             gap: 16
                         }}>
-                            <GitHubIcon sx={{ fontSize: 35, cursor: 'pointer' }} titleAccess="Login with Github" />
+                            <GitHubIcon onClick={() => signIn('github')} sx={{ fontSize: 35, cursor: 'pointer' }} titleAccess="Login with Github" />
                             <GoogleIcon sx={{ fontSize: 35, cursor: 'pointer' }} titleAccess="Login with Google" />
                         </div>
                         <p style={{

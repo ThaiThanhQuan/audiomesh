@@ -188,7 +188,21 @@ export default function AppHeader() {
                             }}
                             onClick={() => handleRedirectHome()}
                         >
-                            SoundCloudify
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center'
+                            }}>
+                                <img
+                                    style={{
+                                        width: '50px',
+                                        height: '50px',
+                                        objectFit: 'contain',
+                                        borderRadius: '6px',
+                                    }}
+                                    src="/logo_nocolor.png"
+                                    alt="SoundCloudify logo" />
+                                <span>SoundCloudify</span>
+                            </div>
                         </Typography>
                         <Search>
                             <SearchIconWrapper>
@@ -217,7 +231,7 @@ export default function AppHeader() {
                                 <Avatar onClick={handleProfileMenuOpen}>QT</Avatar>
                             </> :
                                 <>
-                                    <Link href={'#'} onClick={() => signIn()}>Login</Link>
+                                    <Link href={'/auth/signin'} onClick={() => signIn()}>Login</Link>
                                 </>
                             }
                         </Box>
