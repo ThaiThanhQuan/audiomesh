@@ -6,8 +6,11 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useRouter } from 'next/navigation'
 
 const AuthSignIn = () => {
+    const router = useRouter()
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -18,7 +21,7 @@ const AuthSignIn = () => {
     const [errorUsername, setErrorUsername] = useState<string>('');
     const [errorPassword, setErrorPassword] = useState<string>('');
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setIsErrorUsername(false);
         setIsErrorPassword(false);
         setErrorUsername('');
@@ -35,7 +38,20 @@ const AuthSignIn = () => {
             return;
         }
 
-        console.log('username: ', username, 'password: ', password);
+        const res = await signIn('credentials', {
+            username,
+            password,
+            redirect: false,
+        });
+
+        if (!res?.error) {
+            router.push('/');
+        } else {
+            alert(res.error);
+        }
+
+        console.log('res: ', res);
+
     }
 
     return (
@@ -58,32 +74,52 @@ const AuthSignIn = () => {
                     size={{ xs: 10, sm: 8, md: 5, lg: 4 }}
                 >
                     <div style={{
+                        position: 'relative',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}>
-                        <Link href={'/'} style={{
+                        <div style={{
                             display: 'flex',
-                            alignItems: 'center',
-                            gap: '5px',
-                            textDecoration: 'none',
-                            color: '#fff'
+                            alignItems: 'center'
                         }}>
-                            <img
+                            <Link
+                                href="/"
                                 style={{
-                                    width: '50px',
-                                    height: '50px',
-                                    objectFit: 'contain',
-                                    borderRadius: '6px',
+                                    position: 'absolute',
+                                    left: 0,
+                                    color: '#fff',
                                 }}
-                                src="/soundcloudify_logo.png"
-                                alt="SoundCloudify logo" />
-                            <h3 style={{
-                                margin: 0,
-                                fontSize: 25,
-                                fontWeight: 600
-                            }}>SoundCloudify</h3>
-                        </Link>
+                            >
+                                <ArrowBackIcon sx={{ fontSize: 40 }} />
+                            </Link>
+
+                            <Link
+                                href="/"
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    textDecoration: 'none',
+                                    color: '#fff',
+                                }}>
+                                <img
+                                    style={{
+                                        width: '50px',
+                                        height: '50px',
+                                        objectFit: 'contain',
+                                        borderRadius: '6px',
+                                    }}
+                                    src="/soundcloudify_logo.png"
+                                    alt="SoundCloudify logo" />
+                                <h3 style={{
+                                    margin: 0,
+                                    fontSize: 25,
+                                    fontWeight: 600
+                                }}>SoundCloudify</h3>
+                            </Link>
+                        </div>
+
                         <h1 style={{
                             margin: '15px 0',
                             fontSize: 32,

@@ -231,7 +231,7 @@ export default function AppHeader() {
                                 <Avatar onClick={handleProfileMenuOpen}>QT</Avatar>
                             </> :
                                 <>
-                                    <Link href={'/auth/signin'} onClick={() => signIn()}>Login</Link>
+                                    <Link href={'/auth/signin'}>Login</Link>
                                 </>
                             }
                         </Box>
