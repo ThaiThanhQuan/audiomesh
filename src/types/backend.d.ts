@@ -2,6 +2,13 @@ export { };
 
 declare global {
 
+    interface IPaginateMeta {
+        current: number;
+        pageSize: number;
+        pages: number;
+        total: number;
+    }
+
     interface ITrackTop {
         _id: string,
         title: string,
@@ -52,12 +59,7 @@ declare global {
     }
 
     interface IModelPaginate<T> {
-        meta: {
-            current: number;
-            pageSize: number;
-            pages: number;
-            total: number;
-        },
+        meta: IPaginateMeta
         result: T[]
     }
 
