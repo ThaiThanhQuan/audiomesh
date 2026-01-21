@@ -224,6 +224,7 @@ export default function AppHeader() {
                                 textDecoration: 'unset'
                             }
                         }}>
+                            {session?.user?.role === "ADMIN" && <Link href={'/admin'}>Admin</Link>}
                             {session ? <>
                                 <Link href={'/playlist'}>Playlists</Link>
                                 <Link href={'/like'}>Likes</Link>

@@ -22,6 +22,17 @@ declare global {
         createdAt: string,
         updatedAt: string
     }
+    interface IUser {
+        role: string
+        email: string
+        address: string
+        _id: string
+        name: string
+        username: string
+        password: string
+        age: string
+        gender: string
+    }
 
     interface IRequest {
         url: string;
