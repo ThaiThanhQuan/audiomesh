@@ -1,6 +1,6 @@
 'use client';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Box, Button, Grid, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Alert, Box, Button, Grid, IconButton, InputAdornment, Snackbar, TextField } from "@mui/material";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useState } from "react";
@@ -20,6 +20,9 @@ const AuthSignIn = () => {
 
     const [errorUsername, setErrorUsername] = useState<string>('');
     const [errorPassword, setErrorPassword] = useState<string>('');
+
+    const [openMessage, setOpenMessage] = useState<boolean>(false);
+    const [resMessage, setResMessage] = useState<string>('');
 
     const handleSubmit = async () => {
         setIsErrorUsername(false);
@@ -47,11 +50,9 @@ const AuthSignIn = () => {
         if (!res?.error) {
             router.push('/');
         } else {
-            alert(res.error);
+            setOpenMessage(true);
+            setResMessage(res.error);
         }
-
-        console.log('res: ', res);
-
     }
 
     return (
@@ -146,29 +147,45 @@ const AuthSignIn = () => {
                             '& .MuiOutlinedInput-root': {
                                 backgroundColor: '#181818',
                                 color: '#ffffff',
-                            },
+                                borderRadius: '6px',
 
-                            '& .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#2a2a2a',
-                            },
+                                '& fieldset': {
+                                    borderColor: '#2a2a2a',
+                                },
 
-                            '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#1DB954',
-                            },
+                                '&:hover fieldset': {
+                                    borderColor: '#1DB954',
+                                },
 
-                            '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#1DB954',
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#1DB954',
+                                },
                             },
 
                             '& .MuiInputLabel-root': {
                                 color: '#b3b3b3',
                             },
-
                             '& .MuiInputLabel-root.Mui-focused': {
                                 color: '#1DB954',
                             },
+
+                            '& input': {
+                                color: '#ffffff',
+                            },
+
+                            '& input:-webkit-autofill': {
+                                WebkitBoxShadow: '0 0 0 1000px #181818 inset',
+                                WebkitTextFillColor: '#ffffff',
+                                caretColor: '#ffffff',
+                                transition: 'background-color 9999s ease-in-out 0s',
+                            },
                         }} />
                     <TextField
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleSubmit()
+                            }
+                        }}
                         label="Password"
                         variant="outlined"
                         onChange={(e) => setPassword(e.target.value)}
@@ -181,26 +198,37 @@ const AuthSignIn = () => {
                             '& .MuiOutlinedInput-root': {
                                 backgroundColor: '#181818',
                                 color: '#ffffff',
-                            },
+                                borderRadius: '6px',
 
-                            '& .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#2a2a2a',
-                            },
+                                '& fieldset': {
+                                    borderColor: '#2a2a2a',
+                                },
 
-                            '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#1DB954',
-                            },
+                                '&:hover fieldset': {
+                                    borderColor: '#1DB954',
+                                },
 
-                            '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#1DB954',
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#1DB954',
+                                },
                             },
 
                             '& .MuiInputLabel-root': {
                                 color: '#b3b3b3',
                             },
-
                             '& .MuiInputLabel-root.Mui-focused': {
                                 color: '#1DB954',
+                            },
+
+                            '& input': {
+                                color: '#ffffff',
+                            },
+
+                            '& input:-webkit-autofill': {
+                                WebkitBoxShadow: '0 0 0 1000px #181818 inset',
+                                WebkitTextFillColor: '#ffffff',
+                                caretColor: '#ffffff',
+                                transition: 'background-color 9999s ease-in-out 0s',
                             },
                         }}
                         slotProps={{
@@ -269,6 +297,23 @@ const AuthSignIn = () => {
                     </div>
                 </Grid>
             </Grid>
+
+            <Snackbar
+                open={openMessage}
+                autoHideDuration={3000}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                onClose={() => setOpenMessage(false)}
+                message="Note archived"
+            >
+
+                <Alert
+                    variant="filled"
+                    severity="error"
+                    onClose={() => setOpenMessage(false)}
+                >
+                    {resMessage}
+                </Alert>
+            </Snackbar>
         </Box >
     )
 }
