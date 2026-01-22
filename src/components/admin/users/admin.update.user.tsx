@@ -106,9 +106,6 @@ const AdminUpdateUser = (props: IProps) => {
                                 WebkitTextFillColor: '#9ca3af',
                                 letterSpacing: '2px',
                             },
-                            '& .MuiInputLabel-root': {
-                                color: '#9ca3af',
-                            },
                         }}
                     />
                     <TextField

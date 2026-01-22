@@ -18,7 +18,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import CheckIcon from '@mui/icons-material/Check';
 import AdminUpdateUser from './admin.update.user';
 
 interface IProps {
@@ -100,7 +99,17 @@ const AdminUsers = (props: IProps) => {
                                     <TableCell sx={{ color: '#93c5fd' }}>{user.role}</TableCell>
                                     <TableCell align='center'>
                                         <EditIcon
-                                            sx={{ mr: 2, cursor: 'pointer' }}
+                                            sx={{
+                                                mr: 2,
+                                                cursor: 'pointer',
+                                                transition: 'all 0.2s ease',
+                                                '&:hover': {
+                                                    transform: 'scale(1.1)',
+                                                },
+                                                '&:active': {
+                                                    transform: 'scale(0.95)',
+                                                },
+                                            }}
                                             onClick={() => {
                                                 setSelectedUser(user);
                                                 setOpenUpdate(true);

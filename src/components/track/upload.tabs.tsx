@@ -3,6 +3,8 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Step1 from './steps/step1';
+import Step2 from './steps/step2';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -41,19 +43,15 @@ const UploadTabs = () => {
                     onChange={handleChange}
                     aria-label="basic tabs example"
                 >
-                    <Tab label="Item One" />
-                    <Tab label="Item Two" />
-                    <Tab label="Item Three" />
+                    <Tab label="TRACKS" />
+                    <Tab label="BASIC INFORMATION" />
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-                Item One
+                <Step1 />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                Item Two
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-                Item Three
+                <Step2 />
             </CustomTabPanel>
         </Box>
     );
