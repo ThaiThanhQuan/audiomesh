@@ -191,7 +191,7 @@ const AdminUsers = (props: IProps) => {
                         variant="filled"
                         sx={{ width: '100%' }}
                     >
-                        This is a success Alert inside a Snackbar!
+                        Delete user successfully!
                     </Alert>
                 </Snackbar>
             </Box>

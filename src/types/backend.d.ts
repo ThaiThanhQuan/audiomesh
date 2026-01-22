@@ -59,12 +59,7 @@ declare global {
     }
 
     interface IModelPaginate<T> {
-        meta: {
-            current: number;
-            pageSize: number;
-            pages: number;
-            total: number;
-        },
+        meta: IPaginateMeta
         result: T[]
     }
 
