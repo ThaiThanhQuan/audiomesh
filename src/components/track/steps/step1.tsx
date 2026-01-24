@@ -26,16 +26,13 @@ function InputFileUpload() {
         <Button
             onClick={(e) => e.preventDefault()}
             component="label"
-            role={undefined}
             variant="contained"
-            tabIndex={-1}
             startIcon={<CloudUploadIcon />}
         >
-            Upload files
+            Upload file
             <VisuallyHiddenInput
                 type="file"
                 onChange={(event) => console.log(event.target.files)}
-                multiple
             />
         </Button>
     );
@@ -64,8 +61,7 @@ const Step1 = (props: IProps) => {
                 const res = await axios.post('http://localhost:8000/api/v1/files/upload', formData, {
                     headers: {
                         'Authorization': `Bearer ${session?.access_token}`,
-                        'target_type': 'tracks',
-                        delay: 3000
+                        'target_type': 'tracks'
                     },
                     onUploadProgress: function (progressEvent) {
                         var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total!)
@@ -78,10 +74,10 @@ const Step1 = (props: IProps) => {
                     }
                 });
 
-                setTrackUpload({
-                    ...trackUpload,
-                    uploadedTrackName: res.data.data.fileName,
-                })
+                setTrackUpload((prev: any) => ({
+                    ...prev,
+                    uploadedTrackName: res.data.data.fileName
+                }))
 
             } catch (error) {
                 // @ts-ignore

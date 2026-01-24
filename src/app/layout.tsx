@@ -1,5 +1,6 @@
 import ThemeRegistry from '@/components/theme-registry/theme.registry';
 import NextAuthWrapper from '@/lib/next.auth.wrapper';
+import { ToastProvider } from '@/utils/toast';
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
@@ -7,7 +8,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body>
         <NextAuthWrapper>
           <ThemeRegistry>
-            {props.children}
+            <ToastProvider>
+              {props.children}
+            </ToastProvider>
           </ThemeRegistry>
         </NextAuthWrapper>
       </body>
