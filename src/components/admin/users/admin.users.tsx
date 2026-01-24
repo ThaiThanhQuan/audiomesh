@@ -19,6 +19,7 @@ import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import AdminUpdateUser from './admin.update.user';
+import AdminCreateUser from './admin.create.user';
 
 interface IProps {
     users: IUser[];
@@ -35,7 +36,8 @@ const AdminUsers = (props: IProps) => {
     const [openSuccess, setOpenSuccess] = useState<boolean>(false);
     const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
-    const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+    const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
+    const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
     const handleDelete = async (id: string) => {
         const res = await fetch(`http://localhost:8000/api/v1/users/${id}`, {
@@ -61,7 +63,12 @@ const AdminUsers = (props: IProps) => {
                     justifyContent: 'flex-end',
                     mb: 2
                 }}>
-                    <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddIcon />}
+                        onClick={() => setOpenCreateModal(true)}
+                    >
                         Add new
                     </Button>
                 </Box>
@@ -112,7 +119,7 @@ const AdminUsers = (props: IProps) => {
                                             }}
                                             onClick={() => {
                                                 setSelectedUser(user);
-                                                setOpenUpdate(true);
+                                                setOpenUpdateModal(true);
                                             }} />
                                         <DeleteIcon
                                             onClick={() => {
@@ -206,9 +213,14 @@ const AdminUsers = (props: IProps) => {
             </Box>
 
             <AdminUpdateUser
-                open={openUpdate}
-                setOpenUpdate={setOpenUpdate}
+                openUpdateModal={openUpdateModal}
+                setOpenUpdateModal={setOpenUpdateModal}
                 user={selectedUser}
+            />
+
+            <AdminCreateUser
+                openCreateModal={openCreateModal}
+                setOpenCreateModal={setOpenCreateModal}
             />
         </>
     );

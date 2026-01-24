@@ -1,7 +1,8 @@
 'use client';
 
 import { sendRequest } from "@/utils/api";
-import { Button, MenuItem, Modal, Stack, TextField, Typography } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Button, IconButton, InputAdornment, MenuItem, Modal, Stack, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -20,72 +21,26 @@ const style = {
 };
 
 interface IProps {
-    openUpdateModal: boolean;
-    setOpenUpdateModal: (open: boolean) => void;
-    user: IUser | null;
+    openCreateModal: boolean;
+    setOpenCreateModal: (open: boolean) => void;
 }
 
-const AdminUpdateUser = (props: IProps) => {
-    const { openUpdateModal, setOpenUpdateModal, user } = props;
+
+const AdminCreateUser = (props: IProps) => {
+    const { openCreateModal, setOpenCreateModal } = props;
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const { data: session } = useSession();
     const router = useRouter();
 
     const [form, setForm] = useState({
-        name: user?.name,
-        email: user?.email,
-        age: user?.age,
-        address: user?.address,
-        gender: user?.gender,
-        role: user?.role,
+        name: '',
+        email: '',
+        password: '',
+        age: '',
+        address: '',
+        gender: '',
+        role: '',
     });
-
-    useEffect(() => {
-        if (user) {
-            setForm({
-                name: user.name || '',
-                email: user.email || '',
-                age: user.age || '',
-                address: user.address || '',
-                gender: user.gender || '',
-                role: user.role || '',
-            });
-        }
-    }, [user]);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log(form);
-
-        const updateUser = await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
-            url: 'http://localhost:8000/api/v1/users',
-            method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${session?.access_token}`,
-            },
-            body: {
-                _id: user?._id,
-                name: form.name,
-                email: form.email,
-                age: form.age,
-                address: form.address,
-                gender: form.gender,
-                role: form.role,
-            }
-        });
-
-        if (updateUser && updateUser.data) {
-            setOpenUpdateModal(false);
-            setForm({
-                name: '',
-                email: '',
-                age: '',
-                address: '',
-                gender: '',
-                role: '',
-            });
-            router.refresh();
-        };
-    };
 
     const gender = [{
         label: 'MALE',
@@ -103,15 +58,51 @@ const AdminUpdateUser = (props: IProps) => {
         value: 'ADMIN'
     }];
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(form);
+
+        const createUser = await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
+            url: 'http://localhost:8000/api/v1/users',
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${session?.access_token}`,
+            },
+            body: {
+                name: form.name,
+                email: form.email,
+                password: form.password,
+                age: form.age,
+                address: form.address,
+                gender: form.gender,
+                role: form.role,
+            }
+        });
+
+        if (createUser && createUser.data) {
+            setOpenCreateModal(false);
+            setForm({
+                name: '',
+                email: '',
+                password: '',
+                age: '',
+                address: '',
+                gender: '',
+                role: '',
+            });
+            router.refresh();
+        };
+    };
+
     return (
         <Modal
-            open={openUpdateModal}
-            onClose={() => setOpenUpdateModal(false)}
+            open={openCreateModal}
+            onClose={() => setOpenCreateModal(false)}
             aria-labelledby="update-user-title"
         >
             <Box sx={style} component="form" onSubmit={handleSubmit}>
                 <Typography id="update-user-title" variant="h6" mb={2}>
-                    Update User
+                    Create User
                 </Typography>
 
                 <Stack spacing={2}>
@@ -155,14 +146,36 @@ const AdminUpdateUser = (props: IProps) => {
                         }}
                     />
                     <TextField
+                        required
                         label="Password"
-                        disabled
                         fullWidth
-                        value="********"
+                        value={form.password}
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={(e) =>
+                            setForm({ ...form, password: e.target.value })
+                        }
                         sx={{
-                            '& .MuiInputBase-input.Mui-disabled': {
-                                WebkitTextFillColor: '#9ca3af',
-                                letterSpacing: '2px',
+                            '& .MuiInputLabel-asterisk': {
+                                color: '#ef4444',
+                            },
+                            '& input:-webkit-autofill': {
+                                WebkitTextFillColor: '#e5e7eb',
+                                WebkitBoxShadow: '0 0 0 1000px #111827 inset',
+                                transition: 'background-color 9999s ease-in-out 0s',
+                            },
+                        }}
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
                             },
                         }}
                     />
@@ -258,10 +271,11 @@ const AdminUpdateUser = (props: IProps) => {
                         ))}
                     </TextField>
 
+
                     <Stack direction="row" spacing={2} justifyContent="flex-end">
                         <Button
                             variant="outlined"
-                            onClick={() => setOpenUpdateModal(false)}
+                            onClick={() => setOpenCreateModal(false)}
                         >
                             Cancel
                         </Button>
@@ -278,4 +292,4 @@ const AdminUpdateUser = (props: IProps) => {
     )
 }
 
-export default AdminUpdateUser;
+export default AdminCreateUser;
