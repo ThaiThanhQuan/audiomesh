@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { Button, Grid, MenuItem, TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
@@ -23,6 +23,25 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
     );
 }
 
+function InputFileUpload() {
+    return (
+        <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+        >
+            Upload files
+            <VisuallyHiddenInput
+                type="file"
+                onChange={(event) => console.log(event.target.files)}
+                multiple
+            />
+        </Button>
+    );
+}
+
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -34,23 +53,28 @@ const VisuallyHiddenInput = styled('input')({
     whiteSpace: 'nowrap',
     width: 1,
 });
-const Step2 = () => {
-    const [progress, setProgress] = React.useState(10);
-    const [category, setCategory] = useState<string>('');
 
-    React.useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
+interface INewTrack {
+    title: string,
+    description: string,
+    trackUrl: string,
+    imgUrl: string,
+    category: string
+}
 
+interface IProps {
+    trackUpload: {
+        fileName: string;
+        percent: number;
+        uploadedTrackName: string
+    }
+}
+const Step2 = (props: IProps) => {
+    const { trackUpload } = props;
     const categories = [
         {
             value: 'CHILL',
-            label: 'Chill',
+            label: 'CHILL',
         },
         {
             value: 'WORKOUT',
@@ -62,11 +86,30 @@ const Step2 = () => {
         }
     ]
 
+    const [info, setInfo] = useState<INewTrack>({
+        title: "",
+        description: "",
+        trackUrl: "",
+        imgUrl: "",
+        category: ""
+    })
+
+    console.log('upload', info)
+
+    useEffect(() => {
+        if (trackUpload && trackUpload.uploadedTrackName) {
+            setInfo({
+                ...info,
+                trackUrl: trackUpload.uploadedTrackName
+            })
+        }
+    }, [trackUpload])
+
     return (
         <div>
-            <div>Your uploading track:</div>
+            <div>{trackUpload.fileName}</div>
             <Box sx={{ width: '100%' }}>
-                <LinearProgressWithLabel value={progress} />
+                <LinearProgressWithLabel value={trackUpload.percent} />
             </Box>
 
             <Grid container spacing={2} mt={5}>
@@ -87,33 +130,63 @@ const Step2 = () => {
 
                     </div>
 
-                    <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon />}
-                    >
-                        Upload files
-                        <VisuallyHiddenInput
-                            type="file"
-                            onChange={(event) => console.log(event.target.files)}
-                            multiple
-                        />
-                    </Button>
+                    <InputFileUpload />
                 </Grid>
                 <Grid size={{ xs: 6, md: 8 }}>
-                    <TextField sx={{ mb: 2 }} label="Title" fullWidth variant="standard" margin="dense" />
-                    <TextField sx={{ mb: 2 }} label="Description" fullWidth variant="standard" margin="dense" />
                     <TextField
+                        onChange={(e) => setInfo({
+                            ...info,
+                            title: e.target.value
+                        })}
+                        value={info.title}
+                        sx={{
+                            mb: 2,
+                            '& .MuiInputBase-input': {
+                                paddingLeft: '3px',
+                            },
+                            '& input:-webkit-autofill': {
+                                WebkitTextFillColor: '#e5e7eb',
+                                WebkitBoxShadow: '0 0 0 1000px #111827 inset',
+                                transition: 'background-color 9999s ease-in-out 0s',
+                            },
+                        }}
+                        label="Title"
+                        fullWidth
+                        variant="standard"
+                        margin="dense" />
+                    <TextField
+                        onChange={(e) => setInfo({
+                            ...info,
+                            description: e.target.value
+                        })}
+                        value={info.description}
+                        sx={{
+                            mb: 2,
+                            '& .MuiInputBase-input': {
+                                paddingLeft: '3px',
+                            },
+                            '& input:-webkit-autofill': {
+                                WebkitTextFillColor: '#e5e7eb',
+                                WebkitBoxShadow: '0 0 0 1000px #111827 inset',
+                                transition: 'background-color 9999s ease-in-out 0s',
+                            },
+                        }}
+                        label="Description"
+                        fullWidth
+                        variant="standard"
+                        margin="dense" />
+                    <TextField
+                        onChange={(e) => setInfo({
+                            ...info,
+                            category: e.target.value
+                        })}
+                        value={info.category}
                         sx={{ mb: 2 }}
                         label="Category"
                         fullWidth
                         variant="standard"
                         margin="dense"
                         select
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
                     >
                         {categories.map((category) => (
                             <MenuItem key={category.value} value={category.value}>

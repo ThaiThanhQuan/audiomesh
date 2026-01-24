@@ -2,11 +2,12 @@
 import { FileWithPath, useDropzone } from 'react-dropzone'
 import './theme.css';
 import { styled } from '@mui/material/styles';
-import { Button } from '@mui/material';
+import { Alert, Button } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { use, useCallback } from 'react';
+import { use, useCallback, useState } from 'react';
 import { sendRequestFile } from '@/utils/api';
 import { useSession } from 'next-auth/react';
+import axios from 'axios';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -39,28 +40,57 @@ function InputFileUpload() {
         </Button>
     );
 }
-
-const Step1 = () => {
+interface IProps {
+    setValue: (v: number) => void
+    setTrackUpload: any
+    trackUpload: {
+        fileName: string,
+        percent: number,
+        uploadedTrackName: string
+    }
+}
+const Step1 = (props: IProps) => {
+    const { setValue, setTrackUpload, trackUpload } = props;
 
     const { data: session } = useSession();
 
     const onDrop = useCallback(async (acceptedFiles: FileWithPath[]) => {
         if (acceptedFiles && acceptedFiles[0]) {
+            setValue(1);
             const audio = acceptedFiles[0];
             const formData = new FormData();
             formData.append('fileUpload', audio);
+            try {
+                const res = await axios.post('http://localhost:8000/api/v1/files/upload', formData, {
+                    headers: {
+                        'Authorization': `Bearer ${session?.access_token}`,
+                        'target_type': 'tracks',
+                        delay: 3000
+                    },
+                    onUploadProgress: function (progressEvent) {
+                        var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total!)
 
-            const res = await sendRequestFile<IBackendRes<ITrackTop[]>>({
-                url: 'http://localhost:8000/api/v1/files/upload',
-                method: 'post',
-                body: formData,
-                headers: {
-                    'Authorization': `Bearer ${session?.access_token}`,
-                    'target_type': 'tracks'
-                },
-            })
+                        setTrackUpload({
+                            ...trackUpload,
+                            fileName: acceptedFiles[0].name,
+                            percent: percentCompleted
+                        })
+                    }
+                });
+
+                setTrackUpload({
+                    ...trackUpload,
+                    uploadedTrackName: res.data.data.fileName,
+                })
+
+            } catch (error) {
+                // @ts-ignore
+                alert('error upload file', error?.response?.data.message);
+            }
+
+
         }
-    }, [session])
+    }, [session, setTrackUpload])
 
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
         onDrop,
