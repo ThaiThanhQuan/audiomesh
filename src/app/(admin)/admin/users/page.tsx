@@ -1,4 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import AdminHomePage from "@/components/admin/admin.home";
 import AdminUsers from "@/components/admin/users/admin.users";
 import { sendRequest } from "@/utils/api";
 import { getServerSession } from "next-auth";
@@ -32,11 +33,13 @@ const AdminUsersPage = async ({
     });
 
     return (
-        <AdminUsers
-            users={getUser.data?.result ?? []}
-            meta={getUser.data!.meta}
-            access_token={session?.access_token ?? ''}
-        />
+        <>
+            <AdminUsers
+                users={getUser.data?.result ?? []}
+                meta={getUser.data!.meta}
+                access_token={session?.access_token ?? ''}
+            />
+        </>
     )
 }
 

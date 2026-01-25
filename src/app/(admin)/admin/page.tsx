@@ -1,7 +1,56 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AdminHomePage from "@/components/admin/admin.home";
+import { sendRequest } from "@/utils/api";
+import { getServerSession } from "next-auth";
 
-export default async function Home() {
+const Home = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    current?: string;
+    pageSize?: string;
+  }>;
+}) => {
+
+  const resolvedSearchParams = await searchParams;
+
+  const session = await getServerSession(authOptions)
+
+  const current = Number(resolvedSearchParams.current ?? 1);
+  const pageSize = Number(resolvedSearchParams.pageSize ?? 8);
+
+  const getTrack = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
+    url: 'http://localhost:8000/api/v1/tracks',
+    method: 'GET',
+    queryParams: {
+      current,
+      pageSize
+    },
+    headers: {
+      Authorization: `Bearer ${session?.access_token}`,
+    },
+  });
+
+  const getUser = await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
+    url: 'http://localhost:8000/api/v1/users',
+    method: 'GET',
+    queryParams: {
+      current,
+      pageSize
+    },
+    headers: {
+      Authorization: `Bearer ${session?.access_token}`,
+    },
+  });
+
   return (
-    <AdminHomePage />
+    <>
+      <AdminHomePage
+        users={getUser.data?.meta}
+        tracks={getTrack.data}
+      />
+    </>
   )
 }
+
+export default Home
