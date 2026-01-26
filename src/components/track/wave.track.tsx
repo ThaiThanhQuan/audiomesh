@@ -7,10 +7,12 @@ import './wave.scss'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import { Tooltip } from "@mui/material"
+import { sendRequest } from "@/utils/api"
 
 const WaveTrack = () => {
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio')
+    const id = searchParams.get('id')
     const [isPlaying, setIsPlaying] = useState<boolean>(false)
     const [time, setTime] = useState<string>("0:00")
     const [duration, setDuration] = useState<string>("0:00")
@@ -51,6 +53,7 @@ const WaveTrack = () => {
     }, [])
 
     const wavesurfer = useWavesurfer(containerRef, optionsMemo)
+    const [trackInfo, setTrackInfo] = useState<ITrackTop | null>(null)
 
     useEffect(() => {
         if (!wavesurfer) return
@@ -79,6 +82,20 @@ const WaveTrack = () => {
             subscriptions.forEach((unsub) => unsub())
         }
     }, [wavesurfer])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await sendRequest<IBackendRes<ITrackTop>>({
+                url: `http://localhost:8000/api/v1/tracks/${id}`,
+                method: 'GET'
+            })
+            if (res && res.data) {
+                setTrackInfo(res.data)
+            }
+        }
+
+        fetchData()
+    }, [id])
 
     const onPlayClick = useCallback(() => {
         wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
@@ -130,8 +147,8 @@ const WaveTrack = () => {
                         {isPlaying === true ? <PauseCircleIcon className="icon" /> : <PlayCircleIcon className="icon" />}
                     </div>
                     <div className="song-info">
-                        <h1 className="song-name">LAVIAI</h1>
-                        <h4 className="song-author">QUANTHAI Ft. Hieuthuhai </h4>
+                        <h1 className="song-name">{trackInfo?.title}</h1>
+                        <h4 className="song-author">{trackInfo?.description} </h4>
                     </div>
                 </div>
 
@@ -146,6 +163,7 @@ const WaveTrack = () => {
                             {arrComments.map((comments) => {
                                 return (
                                     <Tooltip
+                                        title={comments.content} key={comments.id}
                                         slotProps={{
                                             tooltip: {
                                                 sx: {
@@ -165,7 +183,7 @@ const WaveTrack = () => {
                                                 ],
                                             },
                                         }}
-                                        title="Laviai">
+                                    >
                                         <img
                                             onPointerMove={(e) => {
                                                 const hover = hoverRef.current!
@@ -191,7 +209,7 @@ const WaveTrack = () => {
             </div>
 
             <div className="song-img">
-                <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/quanthai.png`} alt="song-img" />
+                <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${trackInfo?.imgUrl}`} alt="song-img" />
             </div>
 
         </div >

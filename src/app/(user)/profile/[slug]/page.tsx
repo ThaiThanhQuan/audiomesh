@@ -2,17 +2,18 @@ import ProfileTrack from "@/components/header/profile.tracks"
 import { sendRequest } from "@/utils/api"
 import { Container, Grid } from "@mui/material"
 
-const ProfilePage = async ({ params }: { params: { slug: string } }) => {
+const ProfilePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+
+    const { slug } = await params
 
     const tracks = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
-        url: 'http://localhost:8000/api/v1/tracks/users?current=1&pageSize=10',
+        url: 'http://localhost:8000/api/v1/tracks/users?current=2&pageSize=20',
         method: 'post',
-        body: { id: params.slug }
+        body: { id: slug }
     })
 
     const data = tracks.data?.result ?? []
 
-    console.log('tracks: ', tracks)
     return (
         <Container sx={{ my: 5 }}>
             <Grid container spacing={5}>

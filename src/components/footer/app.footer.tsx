@@ -2,16 +2,28 @@
 import { useTrackContext } from '@/lib/track.wrapper';
 import { useHasMounted } from '@/utils/customHook';
 import { AppBar, Container } from '@mui/material';
+import { useEffect, useRef } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 
 const AppFooter = () => {
 
     const hasMounted = useHasMounted();
+    const playerRef = useRef(null)
 
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
 
-    console.log("currentTrack: ", currentTrack)
+    useEffect(() => {
+        // @ts-ignore
+        const audio = playerRef.current?.audio?.current;
+        if (!audio) return;
+
+        if (currentTrack?.isPlaying) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    }, [currentTrack.trackUrl, currentTrack.isPlaying]);
 
     if (!hasMounted) return (<></>)
 
@@ -45,13 +57,22 @@ const AppFooter = () => {
                         }
                     }}>
                     <AudioPlayer
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/laviai-1769252586492.mp3`}
+                        ref={playerRef}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
                         volume={1}
                         layout='horizontal-reverse'
                         style={{
                             boxShadow: 'unset',
                             backgroundColor: 'transparent',
                         }}
+                        onPause={() => {
+                            setCurrentTrack({ ...currentTrack, isPlaying: false })
+                        }}
+                        onPlay={() => {
+                            setCurrentTrack({ ...currentTrack, isPlaying: true })
+                        }}
+
+
                     />
                     <div style={{
                         display: 'flex',
@@ -60,7 +81,7 @@ const AppFooter = () => {
                         justifyContent: 'center',
                         minWidth: 100
                     }}>
-                        <span style={{ color: '#999', fontSize: 12 }}>QUANTHAI</span>
+                        <span style={{ color: '#999', fontSize: 12 }}>{currentTrack.description}</span>
                         <span style={{
                             color: '#fff',
                             fontWeight: 500,
@@ -68,7 +89,7 @@ const AppFooter = () => {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             maxWidth: 250,
-                        }}>Ngày buồn tháng nhớ năm thương</span>
+                        }}>{currentTrack.title}</span>
                     </div>
                 </Container>
             </AppBar >
