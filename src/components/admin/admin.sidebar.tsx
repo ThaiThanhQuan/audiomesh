@@ -4,6 +4,7 @@ import { Box } from "@mui/system"
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import CommentIcon from '@mui/icons-material/Comment';
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -16,6 +17,7 @@ const AdminSidebar = () => {
         { label: 'Home', icon: <HomeIcon />, path: '/admin' },
         { label: 'Users', icon: <PersonIcon />, path: '/admin/users' },
         { label: 'Tracks', icon: <MusicNoteIcon />, path: '/admin/tracks' },
+        { label: 'Comments', icon: <CommentIcon />, path: '/admin/comments' },
     ];
 
     return (

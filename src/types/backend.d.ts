@@ -2,6 +2,28 @@ export { };
 
 declare global {
 
+    interface IComment {
+        _id: string,
+        content: string,
+        moment: number,
+        user: {
+            _id: string,
+            email: string,
+            name: string,
+            role: string,
+            type: string
+        },
+        track: {
+            _id: string,
+            title: string,
+            description: string,
+            trackUrl: string
+        },
+        isDeleted: false,
+        createdAt: string,
+        updatedAt: string
+    }
+
     interface IPaginateMeta {
         current: number;
         pageSize: number;

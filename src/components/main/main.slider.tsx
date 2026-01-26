@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { Settings } from "react-slick";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Link from "next/link";
@@ -186,8 +186,48 @@ const MainSlider = (props: IProps) => {
                                     )}
                                 </div>
 
-                                <Link href={`/track/${track._id}?audio=${track.trackUrl}&id=${track._id}`}><h3>{track.title}</h3></Link>
-                                <h4>{track.description}</h4>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        marginTop: 5
+                                    }}
+                                >
+                                    <Link
+                                        href={`/track/${track._id}?audio=${track.trackUrl}&id=${track._id}`}
+                                        style={{
+                                            textDecoration: 'none'
+                                        }}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                fontSize: 18,
+                                                whiteSpace: 'nowrap',
+                                                overflow: 'hidden',
+                                                maxWidth: 200,
+                                                textOverflow: 'ellipsis',
+                                                color: '#fff',
+
+                                                '&:hover': {
+                                                    color: '#585858',
+                                                },
+                                            }}
+                                        >
+                                            {track.title}
+                                        </Typography>
+                                    </Link>
+                                    <h4
+                                        style={{
+                                            fontSize: 15,
+                                            margin: 0,
+                                            opacity: 0.5
+                                        }}
+                                    >
+                                        {track.description}
+                                    </h4>
+                                </div>
                             </div>
                         )
                     })}
