@@ -13,8 +13,6 @@ const AppFooter = () => {
 
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
 
-    console.log('currenTrack: ', currentTrack._id)
-
     useEffect(() => {
         // @ts-ignore
         const audio = playerRef.current?.audio?.current;
@@ -84,7 +82,7 @@ const AppFooter = () => {
                             justifyContent: 'center',
                             minWidth: 100
                         }}>
-                            <span style={{ color: '#999', fontSize: 12 }}>{currentTrack.description}</span>
+                            <span style={{ color: '#999', fontSize: 15 }}>{currentTrack.description}</span>
                             <span style={{
                                 color: '#fff',
                                 fontWeight: 500,

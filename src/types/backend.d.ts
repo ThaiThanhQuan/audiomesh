@@ -24,6 +24,17 @@ declare global {
         updatedAt: string
     }
 
+    interface ITrackLike {
+        _id: string,
+        title: string,
+        description: string,
+        category: string,
+        imgUrl: string,
+        trackUrl: string,
+        countLike: number,
+        countPlay: number
+    }
+
     interface IPaginateMeta {
         current: number;
         pageSize: number;

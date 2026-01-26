@@ -1,9 +1,14 @@
-import { fetchDefaultImage } from "@/utils/api"
-import { Grid, TextField } from "@mui/material"
+import { fetchDefaultImage, sendRequest } from "@/utils/api"
+import { Grid, IconButton, InputAdornment, TextField } from "@mui/material"
 import { useSession } from "next-auth/react"
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/vi'
+import { useState } from "react"
+import SendIcon from '@mui/icons-material/Send';
+import { useRouter } from "next/navigation"
+import WaveSurfer from 'wavesurfer.js'
+import { useHasMounted } from "@/utils/customHook"
 
 dayjs.extend(relativeTime)
 dayjs.locale('en')
@@ -11,17 +16,63 @@ dayjs.locale('en')
 interface IProps {
     track: ITrackTop | null
     comment: IComment[]
+    wavesurfer: WaveSurfer | null
 }
 const CommentTrack = (props: IProps) => {
-    const { track, comment } = props
+    const { track, comment, wavesurfer } = props
     const { data: session } = useSession();
+    const router = useRouter()
+    const hasMounted = useHasMounted();
 
-    console.log('comment:', comment)
-    console.log('track:', track)
+    const [yourComment, setYourComment] = useState('')
+
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60)
+        const secondsRemainder = Math.round(seconds) % 60
+        const paddedSeconds = `0${secondsRemainder}`.slice(-2)
+        return `${minutes}:${paddedSeconds}`
+    }
+
+    const handleSubmit = async () => {
+        const res = await sendRequest<IBackendRes<IComment>>({
+            url: 'http://localhost:8000/api/v1/comments',
+            method: 'post',
+            body: {
+                content: yourComment,
+                moment: Math.round(wavesurfer?.getCurrentTime() ?? 0),
+                track: track?._id
+            },
+            headers: {
+                Authorization: `Bearer ${session?.access_token}`,
+            },
+        })
+
+        if (res.data) {
+            router.refresh()
+            setYourComment('')
+        }
+    }
+
+    const handleJumpTrack = (moment: number) => {
+        if (wavesurfer) {
+            const duration = wavesurfer.getDuration()
+            wavesurfer.seekTo(moment / duration)
+            wavesurfer.play()
+        }
+    }
+
     return (
         <>
             <TextField
                 fullWidth
+                value={yourComment}
+                onChange={(e) => setYourComment(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleSubmit()
+                    }
+                }
+                }
                 label="Comments"
                 variant="standard"
                 sx={{
@@ -32,6 +83,20 @@ const CommentTrack = (props: IProps) => {
                         WebkitBoxShadow: '0 0 0 1000px #111827 inset',
                         transition: 'background-color 9999s ease-in-out 0s',
                         pl: '2px'
+                    },
+                }}
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={() => handleSubmit()}
+                                    disabled={!yourComment.trim()}
+                                >
+                                    <SendIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        ),
                     },
                 }}
             />
@@ -118,6 +183,18 @@ const CommentTrack = (props: IProps) => {
                                         }}
                                     >
                                         {comment.user.name}
+                                        <span
+                                            onClick={() => handleJumpTrack(comment.moment)}
+                                            style={{
+                                                marginLeft: 8,
+                                                fontSize: 15,
+                                                fontWeight: 400,
+                                                color: '#9ca3af',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            at  {formatTime(comment.moment)}
+                                        </span>
                                     </p>
                                     <p
                                         style={{
@@ -139,7 +216,7 @@ const CommentTrack = (props: IProps) => {
                                     whiteSpace: 'nowrap',
                                 }}
                             >
-                                {dayjs(comment.createdAt).fromNow()}
+                                {hasMounted && dayjs(comment.createdAt).fromNow()}
                             </div>
                         </div>
                     ))) : <p style={{ color: '#888' }}>No comments yet</p>}

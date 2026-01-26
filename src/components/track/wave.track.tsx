@@ -10,6 +10,7 @@ import { Tooltip } from "@mui/material"
 import { useTrackContext } from "@/lib/track.wrapper"
 import { fetchDefaultImage } from "@/utils/api"
 import CommentTrack from "./comment.track"
+import LikeTrack from "./like.track"
 
 interface IProps {
     track: ITrackTop | null
@@ -17,8 +18,6 @@ interface IProps {
 }
 const WaveTrack = (props: IProps) => {
     const { track, comments } = props
-
-    console.log('comments: ', comments)
 
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio')
@@ -94,7 +93,7 @@ const WaveTrack = (props: IProps) => {
     }, [wavesurfer])
 
     const onPlayClick = useCallback(() => {
-        wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+        wavesurfer?.isPlaying() ? wavesurfer?.pause() : wavesurfer?.play();
     }, [wavesurfer])
 
     const formatTime = (seconds: number) => {
@@ -105,7 +104,7 @@ const WaveTrack = (props: IProps) => {
     }
 
     const calLeft = (moment: number) => {
-        const hardCodedDuration = 272
+        const hardCodedDuration = wavesurfer?.getDuration() ?? 0
         const percent = (moment / hardCodedDuration) * 100
         return `${percent}%`
     }
@@ -208,9 +207,14 @@ const WaveTrack = (props: IProps) => {
                 </div>
             </div >
 
+            <LikeTrack
+                track={track}
+            />
+
             <CommentTrack
                 track={track}
                 comment={comments}
+                wavesurfer={wavesurfer}
             />
         </>
     )
