@@ -7,18 +7,24 @@ import './wave.scss'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import { Tooltip } from "@mui/material"
-import { sendRequest } from "@/utils/api"
+import { useTrackContext } from "@/lib/track.wrapper"
 
-const WaveTrack = () => {
+interface IProps {
+    track: ITrackTop | null
+}
+const WaveTrack = (props: IProps) => {
+    const { track } = props
+
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio')
-    const id = searchParams.get('id')
     const [isPlaying, setIsPlaying] = useState<boolean>(false)
     const [time, setTime] = useState<string>("0:00")
     const [duration, setDuration] = useState<string>("0:00")
 
     const containerRef = useRef<HTMLDivElement>(null)
     const hoverRef = useRef<HTMLDivElement>(null)
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
+
 
     const optionsMemo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
         let gradient, progressGradient
@@ -53,7 +59,6 @@ const WaveTrack = () => {
     }, [])
 
     const wavesurfer = useWavesurfer(containerRef, optionsMemo)
-    const [trackInfo, setTrackInfo] = useState<ITrackTop | null>(null)
 
     useEffect(() => {
         if (!wavesurfer) return
@@ -82,20 +87,6 @@ const WaveTrack = () => {
             subscriptions.forEach((unsub) => unsub())
         }
     }, [wavesurfer])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await sendRequest<IBackendRes<ITrackTop>>({
-                url: `http://localhost:8000/api/v1/tracks/${id}`,
-                method: 'GET'
-            })
-            if (res && res.data) {
-                setTrackInfo(res.data)
-            }
-        }
-
-        fetchData()
-    }, [id])
 
     const onPlayClick = useCallback(() => {
         wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
@@ -138,17 +129,35 @@ const WaveTrack = () => {
         return `${percent}%`
     }
 
+    useEffect(() => {
+        if (wavesurfer && currentTrack.isPlaying) {
+            wavesurfer.pause()
+        }
+    }, [currentTrack])
+
+    useEffect(() => {
+        if (track?._id && !currentTrack._id) {
+            setCurrentTrack({ ...track, isPlaying: false })
+        }
+    }, [track])
 
     return (
         <div className="container">
             <div className="song">
                 <div className="song-control">
-                    <div className="song-btn" onClick={() => onPlayClick()}>
+                    <div className="song-btn"
+                        onClick={() => {
+                            onPlayClick()
+                            if (track && wavesurfer) {
+                                setCurrentTrack({ ...currentTrack, isPlaying: false })
+                            }
+                        }}
+                    >
                         {isPlaying === true ? <PauseCircleIcon className="icon" /> : <PlayCircleIcon className="icon" />}
                     </div>
                     <div className="song-info">
-                        <h1 className="song-name">{trackInfo?.title}</h1>
-                        <h4 className="song-author">{trackInfo?.description} </h4>
+                        <h1 className="song-name">{track?.title}</h1>
+                        <h4 className="song-author">{track?.description} </h4>
                     </div>
                 </div>
 
@@ -209,7 +218,7 @@ const WaveTrack = () => {
             </div>
 
             <div className="song-img">
-                <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${trackInfo?.imgUrl}`} alt="song-img" />
+                <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="song-img" />
             </div>
 
         </div >

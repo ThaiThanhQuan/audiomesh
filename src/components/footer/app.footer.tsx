@@ -23,7 +23,7 @@ const AppFooter = () => {
         } else {
             audio.pause();
         }
-    }, [currentTrack.trackUrl, currentTrack.isPlaying]);
+    }, [currentTrack]);
 
     if (!hasMounted) return (<></>)
 
