@@ -1,6 +1,6 @@
 .container {
     width: 100%;
-    height: 400px;
+    height: 380px;
     background-color: #1f1f1f;
     padding: 15px;
     position: relative;
@@ -131,7 +131,6 @@
             #2a2a2a 0%,
             #121212 100%);
     border-radius: 20px;
-    margin-top: 20px;
 
     .image {
         width: 100%;
@@ -139,4 +138,10 @@
         border-radius: 20px;
         object-fit: cover;
     }
+}
+
+.song-img-default {
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
 }

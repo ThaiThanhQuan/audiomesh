@@ -15,10 +15,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Avatar, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession, signIn, signOut } from "next-auth/react"
+import { fetchDefaultImage } from '@/utils/api';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -228,7 +229,15 @@ export default function AppHeader() {
                                 <Link href={'/playlist'}>Playlists</Link>
                                 <Link href={'/like'}>Likes</Link>
                                 <Link href={'/track/upload'}>Upload</Link>
-                                <Avatar onClick={handleProfileMenuOpen}>QT</Avatar>
+                                <img
+                                    onClick={handleProfileMenuOpen}
+                                    src={fetchDefaultImage(session.user.type)} alt=""
+                                    style={{
+                                        width: 40,
+                                        height: 40,
+                                        borderRadius: 100
+                                    }}
+                                />
                             </> :
                                 <>
                                     <Link href={'/auth/signin'}>Login</Link>

@@ -8,12 +8,17 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import { Tooltip } from "@mui/material"
 import { useTrackContext } from "@/lib/track.wrapper"
+import { fetchDefaultImage } from "@/utils/api"
+import CommentTrack from "./comment.track"
 
 interface IProps {
     track: ITrackTop | null
+    comments: IComment[]
 }
 const WaveTrack = (props: IProps) => {
-    const { track } = props
+    const { track, comments } = props
+
+    console.log('comments: ', comments)
 
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio')
@@ -99,30 +104,6 @@ const WaveTrack = (props: IProps) => {
         return `${minutes}:${paddedSeconds}`
     }
 
-    const arrComments = [
-        {
-            id: 1,
-            avatar: "http://localhost:8000/images/quanthai.png",
-            moment: 10,
-            user: "username 1",
-            content: "just a comment1"
-        },
-        {
-            id: 2,
-            avatar: "http://localhost:8000/images/quanthai.png",
-            moment: 30,
-            user: "username 2",
-            content: "just a comment3"
-        },
-        {
-            id: 3,
-            avatar: "http://localhost:8000/images/quanthai.png",
-            moment: 50,
-            user: "username 3",
-            content: "just a comment3"
-        },
-    ]
-
     const calLeft = (moment: number) => {
         const hardCodedDuration = 272
         const percent = (moment / hardCodedDuration) * 100
@@ -142,86 +123,96 @@ const WaveTrack = (props: IProps) => {
     }, [track])
 
     return (
-        <div className="container">
-            <div className="song">
-                <div className="song-control">
-                    <div className="song-btn"
-                        onClick={() => {
-                            onPlayClick()
-                            if (track && wavesurfer) {
-                                setCurrentTrack({ ...currentTrack, isPlaying: false })
-                            }
-                        }}
-                    >
-                        {isPlaying === true ? <PauseCircleIcon className="icon" /> : <PlayCircleIcon className="icon" />}
+        <>
+            <div className="container">
+                <div className="song">
+                    <div className="song-control">
+                        <div className="song-btn"
+                            onClick={() => {
+                                onPlayClick()
+                                if (track && wavesurfer) {
+                                    setCurrentTrack({ ...currentTrack, isPlaying: false })
+                                }
+                            }}
+                        >
+                            {isPlaying === true ? <PauseCircleIcon className="icon" /> : <PlayCircleIcon className="icon" />}
+                        </div>
+                        <div className="song-info">
+                            <h1 className="song-name">{track?.title}</h1>
+                            <h4 className="song-author">{track?.description} </h4>
+                        </div>
                     </div>
-                    <div className="song-info">
-                        <h1 className="song-name">{track?.title}</h1>
-                        <h4 className="song-author">{track?.description} </h4>
-                    </div>
-                </div>
 
-                <div className="audio">
-                    <div ref={containerRef} className="waveform">
-                        <div className="time">{time}</div>
-                        <div className="duration">{duration}</div>
-                        <div className="hover-wave" ref={hoverRef}></div>
-                        <div className="overlay"></div>
+                    <div className="audio">
+                        <div ref={containerRef} className="waveform">
+                            <div className="time">{time}</div>
+                            <div className="duration">{duration}</div>
+                            <div className="hover-wave" ref={hoverRef}></div>
+                            <div className="overlay"></div>
 
-                        <div className="comments" style={{ position: 'relative' }}>
-                            {arrComments.map((comments) => {
-                                return (
-                                    <Tooltip
-                                        title={comments.content} key={comments.id}
-                                        slotProps={{
-                                            tooltip: {
-                                                sx: {
-                                                    backgroundColor: 'rgba(0,0,0,0.8)',
-                                                    color: '#fff',
-                                                    padding: '6px 10px',
-                                                    borderRadius: '6px',
-                                                },
-                                            }, popper: {
-                                                modifiers: [
-                                                    {
-                                                        name: 'offset',
-                                                        options: {
-                                                            offset: [0, -10],
-                                                        },
+                            <div className="comments" style={{ position: 'relative' }}>
+                                {comments.map((comment) => {
+                                    return (
+                                        <Tooltip
+                                            title={comment.content} key={comment._id}
+                                            slotProps={{
+                                                tooltip: {
+                                                    sx: {
+                                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                                        color: '#fff',
+                                                        padding: '6px 10px',
+                                                        borderRadius: '6px',
                                                     },
-                                                ],
-                                            },
-                                        }}
-                                    >
-                                        <img
-                                            onPointerMove={(e) => {
-                                                const hover = hoverRef.current!
-                                                hover.style.width = calLeft(comments.moment + 3)
+                                                }, popper: {
+                                                    modifiers: [
+                                                        {
+                                                            name: 'offset',
+                                                            options: {
+                                                                offset: [0, -10],
+                                                            },
+                                                        },
+                                                    ],
+                                                },
                                             }}
-                                            key={comments.id}
-                                            style={{
-                                                width: 30,
-                                                height: 30,
-                                                borderRadius: "50%",
-                                                objectFit: "cover",
-                                                position: "absolute",
-                                                top: 70,
-                                                zIndex: 10,
-                                                left: calLeft(comments.moment)
-                                            }} src={comments.avatar} />
-                                    </Tooltip>
-                                )
-                            })}
+                                        >
+                                            <img
+                                                onPointerMove={(e) => {
+                                                    const hover = hoverRef.current!
+                                                    hover.style.width = calLeft(comment.moment + 3)
+                                                }}
+                                                key={comment._id}
+                                                style={{
+                                                    width: 30,
+                                                    height: 30,
+                                                    borderRadius: "50%",
+                                                    objectFit: "cover",
+                                                    position: "absolute",
+                                                    top: 70,
+                                                    zIndex: 10,
+                                                    left: calLeft(comment.moment)
+                                                }} src={fetchDefaultImage(comment.user.type)} />
+                                        </Tooltip>
+                                    )
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="song-img">
-                <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="song-img" />
-            </div>
+                <div className="song-img">
+                    {
+                        track?.imgUrl ?
+                            <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="song-img" /> :
+                            <div className="song-img-default"></div>
+                    }
+                </div>
+            </div >
 
-        </div >
+            <CommentTrack
+                track={track}
+                comment={comments}
+            />
+        </>
     )
 }
 
