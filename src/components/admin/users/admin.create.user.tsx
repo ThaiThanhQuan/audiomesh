@@ -6,7 +6,7 @@ import { Alert, Button, IconButton, InputAdornment, MenuItem, Modal, Snackbar, S
 import { Box } from "@mui/system";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const style = {
     position: 'absolute',

@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import AdminComments from "@/components/admin/comments/admin.comments";
 import { sendRequest } from "@/utils/api";
 import { getServerSession } from "next-auth";

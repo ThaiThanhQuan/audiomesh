@@ -82,7 +82,17 @@ const AppFooter = () => {
                             justifyContent: 'center',
                             minWidth: 100
                         }}>
-                            <span style={{ color: '#999', fontSize: 15 }}>{currentTrack.description}</span>
+                            <span
+                                style={{
+                                    color: '#999',
+                                    fontSize: 15,
+                                    maxWidth: 190,
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                }}>
+                                {currentTrack.description}
+                            </span>
                             <span style={{
                                 color: '#fff',
                                 fontWeight: 500,

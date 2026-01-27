@@ -1,5 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import AdminHomePage from "@/components/admin/admin.home";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import AdminTracks from "@/components/admin/tracks/admin.tracks";
 import { sendRequest } from "@/utils/api";
 import { getServerSession } from "next-auth";

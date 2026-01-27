@@ -18,7 +18,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { Container } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 import { fetchDefaultImage } from '@/utils/api';
 
 const Search = styled('div')(({ theme }) => ({

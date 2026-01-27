@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { Settings } from "react-slick";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Link from "next/link";
@@ -170,7 +170,9 @@ const MainSlider = (props: IProps) => {
                                     <img
                                         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
                                         style={{
-                                            width: '100%',
+                                            width: '193px',
+                                            height: '193px',
+                                            objectFit: 'cover',
                                             display: 'block',
                                             opacity: hoveredId === track._id ? 0.7 : 1,
                                             transition: 'opacity 0.3s ease',
@@ -203,7 +205,7 @@ const MainSlider = (props: IProps) => {
                                     >
                                         <Typography
                                             sx={{
-                                                fontSize: 18,
+                                                fontSize: 17,
                                                 whiteSpace: 'nowrap',
                                                 overflow: 'hidden',
                                                 maxWidth: 200,
@@ -220,9 +222,13 @@ const MainSlider = (props: IProps) => {
                                     </Link>
                                     <h4
                                         style={{
-                                            fontSize: 15,
+                                            fontSize: 14,
                                             margin: 0,
-                                            opacity: 0.5
+                                            opacity: 0.5,
+                                            maxWidth: 190,
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
                                         }}
                                     >
                                         {track.description}

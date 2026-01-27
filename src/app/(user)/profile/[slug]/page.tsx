@@ -7,7 +7,7 @@ const ProfilePage = async ({ params }: { params: Promise<{ slug: string }> }) =>
     const { slug } = await params
 
     const tracks = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
-        url: 'http://localhost:8000/api/v1/tracks/users?current=2&pageSize=20',
+        url: 'http://localhost:8000/api/v1/tracks/users?current=1&pageSize=30',
         method: 'post',
         body: { id: slug }
     })

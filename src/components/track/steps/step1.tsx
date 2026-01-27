@@ -2,12 +2,11 @@
 import { FileWithPath, useDropzone } from 'react-dropzone'
 import './theme.css';
 import { styled } from '@mui/material/styles';
-import { Alert, Button } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { use, useCallback, useState } from 'react';
-import { sendRequestFile } from '@/utils/api';
+import { useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
+import { Button } from '@mui/material';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',

@@ -2,7 +2,7 @@ import MainSlider from "@/components/main/main.slider";
 import { Container } from "@mui/material";
 import { sendRequest } from "@/utils/api";
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
@@ -12,7 +12,7 @@ export default async function Home() {
     method: 'post',
     body: {
       category: 'CHILL',
-      limit: 10
+      limit: 100
     }
   })
 
@@ -21,7 +21,7 @@ export default async function Home() {
     method: 'post',
     body: {
       category: 'PARTY',
-      limit: 10
+      limit: 100
     }
   })
 
@@ -30,7 +30,7 @@ export default async function Home() {
     method: 'post',
     body: {
       category: 'WORKOUT',
-      limit: 10
+      limit: 100
     }
   })
   return (

@@ -9,7 +9,6 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { sendRequest } from '@/utils/api';
-import { title } from 'process';
 import { useToast } from '@/utils/toast';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
