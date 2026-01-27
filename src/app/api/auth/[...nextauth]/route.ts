@@ -9,7 +9,7 @@ export const authOptions: AuthOptions = {
     secret: process.env.NO_SECRET,
     providers: [
         CredentialsProvider({
-            name: 'SoundCloudify',
+            name: 'Audiomesh',
             credentials: {
                 username: { label: "Username", type: "text" },
                 password: { label: "Password", type: "password" }

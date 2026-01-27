@@ -111,13 +111,13 @@ const AuthSignIn = () => {
                                         objectFit: 'contain',
                                         borderRadius: '6px',
                                     }}
-                                    src="/soundcloudify_logo.png"
-                                    alt="SoundCloudify logo" />
+                                    src="/audiomesh.png"
+                                    alt="Audiomesh logo" />
                                 <h3 style={{
                                     margin: 0,
                                     fontSize: 25,
                                     fontWeight: 600
-                                }}>SoundCloudify</h3>
+                                }}>Audiomesh</h3>
                             </Link>
                         </div>
 
@@ -131,7 +131,7 @@ const AuthSignIn = () => {
                             margin: 0,
                             fontSize: 14,
                             color: '#b3b3b3'
-                        }}>Join the world of music with SoundCloudify.</p>
+                        }}>Join the world of music with Audiomesh.</p>
                     </div>
 
                     {/* <FormControl> */}

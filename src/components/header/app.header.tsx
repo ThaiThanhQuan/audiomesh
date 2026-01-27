@@ -199,9 +199,9 @@ export default function AppHeader() {
                                         objectFit: 'contain',
                                         borderRadius: '6px',
                                     }}
-                                    src="/logo_nocolor.png"
-                                    alt="SoundCloudify logo" />
-                                <span>SoundCloudify</span>
+                                    src="/audiomesh_nocolor.png"
+                                    alt="Audiomesh logo" />
+                                <span>Audiomesh</span>
                             </div>
                         </Typography>
                         <Search>

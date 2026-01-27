@@ -41,15 +41,15 @@ const AdminSidebar = () => {
                 }}>
                     <Box
                         component="img"
-                        src="/soundcloudify_logo.png"
-                        alt="SoundCloudify logo"
+                        src="/audiomesh_nocolor.png"
+                        alt="Audiomesh logo"
                         sx={{
                             width: 32,
                             height: 32,
                             objectFit: 'contain',
                         }}
                     />
-                    <Typography fontWeight="bold">SoundCloudify</Typography>
+                    <Typography fontWeight="bold">Audiomesh</Typography>
                 </Link>
                 <Typography sx={{ paddingLeft: 1 }} variant="caption" color="gray">Music Player</Typography>
             </Box>
