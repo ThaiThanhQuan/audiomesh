@@ -14,8 +14,12 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const slug = (await params).slug
 
+    const baseSlug = slug?.split('.html') ?? []
+    const slugSegments = (baseSlug[0]?.split('-') ?? []) as string[]
+    const id = slugSegments[slugSegments.length - 1]
+
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `http://localhost:8000/api/v1/tracks/${slug}`,
+        url: `http://localhost:8000/api/v1/tracks/${id}`,
         method: 'GET',
     })
 
@@ -34,8 +38,12 @@ export async function generateMetadata(
 const DetailTrackPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params
 
+    const baseSlug = slug?.split('.html') ?? []
+    const slugSegments = (baseSlug[0]?.split('-') ?? []) as string[]
+    const id = slugSegments[slugSegments.length - 1]
+
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `http://localhost:8000/api/v1/tracks/${slug}`,
+        url: `http://localhost:8000/api/v1/tracks/${id}`,
         method: 'GET',
         nextOption: { cache: 'no-store' }
     })

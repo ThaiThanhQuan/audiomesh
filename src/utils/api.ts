@@ -1,4 +1,5 @@
 import queryString from 'query-string';
+import slugify from 'slugify';
 
 export const sendRequest = async <T>(props: IRequest) => {
     let {
@@ -86,4 +87,8 @@ export const fetchDefaultImage = (type: string) => {
     if (type === 'GOOGLE') return '/user/default_google.png'
 
     return '/user/default_avatar.jpg'
+}
+
+export const convertSlugUrl = (str: string) => {
+    return slugify(str, { lower: true, locale: 'vi' })
 }

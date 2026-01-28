@@ -11,6 +11,7 @@ import { useState } from "react";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { useTrackContext } from "@/lib/track.wrapper";
+import { convertSlugUrl } from "@/utils/api";
 
 interface IProps {
     data: ITrackTop[]
@@ -198,7 +199,7 @@ const MainSlider = (props: IProps) => {
                                     }}
                                 >
                                     <Link
-                                        href={`/track/${track._id}?audio=${track.trackUrl}&id=${track._id}`}
+                                        href={`/track/${convertSlugUrl(track.title)}-${track._id}.html?audio=${track.trackUrl}`}
                                         style={{
                                             textDecoration: 'none'
                                         }}
