@@ -9,6 +9,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useRouter } from "next/navigation"
 import WaveSurfer from 'wavesurfer.js'
 import { useHasMounted } from "@/utils/customHook"
+import Image from "next/image"
 
 dayjs.extend(relativeTime)
 dayjs.locale('en')
@@ -115,12 +116,12 @@ const CommentTrack = (props: IProps) => {
                     }}
                 >
                     {session &&
-                        <img
+                        <Image
                             src={fetchDefaultImage(session?.user.type)}
-                            alt="Image"
+                            alt="user comment"
+                            height={150}
+                            width={150}
                             style={{
-                                width: 150,
-                                height: 150,
                                 borderRadius: '50%',
                                 border: '3px solid #1db954',
                             }}
@@ -162,12 +163,12 @@ const CommentTrack = (props: IProps) => {
                                     alignItems: 'center',
                                 }}
                             >
-                                <img
+                                <Image
                                     src={fetchDefaultImage(comment.user.type)}
-                                    alt="Avatar"
+                                    alt="comment"
+                                    width={35}
+                                    height={35}
                                     style={{
-                                        width: 35,
-                                        height: 35,
                                         borderRadius: '50%',
                                     }}
                                 />

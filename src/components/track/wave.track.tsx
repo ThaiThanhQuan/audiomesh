@@ -11,6 +11,7 @@ import { useTrackContext } from "@/lib/track.wrapper"
 import { fetchDefaultImage, sendRequest } from "@/utils/api"
 import CommentTrack from "./comment.track"
 import LikeTrack from "./like.track"
+import Image from "next/image"
 
 interface IProps {
     track: ITrackTop | null
@@ -191,22 +192,24 @@ const WaveTrack = (props: IProps) => {
                                                 },
                                             }}
                                         >
-                                            <img
+                                            <Image
                                                 onPointerMove={(e) => {
                                                     const hover = hoverRef.current!
                                                     hover.style.width = calLeft(comment.moment + 3)
                                                 }}
                                                 key={comment._id}
+                                                width={30}
+                                                height={30}
                                                 style={{
-                                                    width: 30,
-                                                    height: 30,
                                                     borderRadius: "50%",
                                                     objectFit: "cover",
                                                     position: "absolute",
                                                     top: 70,
                                                     zIndex: 10,
                                                     left: calLeft(comment.moment)
-                                                }} src={fetchDefaultImage(comment.user.type)} />
+                                                }} src={fetchDefaultImage(comment.user.type)}
+                                                alt="user-comment"
+                                            />
                                         </Tooltip>
                                     )
                                 })}
@@ -215,10 +218,21 @@ const WaveTrack = (props: IProps) => {
                     </div>
                 </div>
 
-                <div className="song-img">
+                <div className="song-img"
+                    style={{
+                        position: 'relative'
+                    }}>
                     {
                         track?.imgUrl ?
-                            <img className="image" src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="song-img" /> :
+                            <Image
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                                alt="song-img"
+                                fill
+                                style={{
+                                    borderRadius: '20px',
+                                    objectFit: 'cover'
+                                }}
+                            /> :
                             <div className="song-img-default"></div>
                     }
                 </div>

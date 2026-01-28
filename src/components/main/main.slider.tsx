@@ -12,6 +12,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { useTrackContext } from "@/lib/track.wrapper";
 import { convertSlugUrl } from "@/utils/api";
+import Image from "next/image";
 
 interface IProps {
     data: ITrackTop[]
@@ -120,29 +121,44 @@ const MainSlider = (props: IProps) => {
         infinite: true,
         speed: 500,
         slidesToShow: 5,
-        slidesToScroll: 1,
+        slidesToScroll: 4,
         prevArrow: <PrevArrow />,
-        nextArrow: <NextArrow />
+        nextArrow: <NextArrow />,
+
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    initialSlide: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
     };
     return (
         <>
             <Box sx={{
                 mx: '50px',
-                position: 'relative',
 
                 '& .track': {
                     px: 1,
-                },
-
-                '& .track img': {
-                    width: '100%',
-                    borderRadius: '6px',
-                },
-
-                '& .track h3': {
-                    margin: '0',
-                    fontSize: '15px',
-                    color: '#fff',
                 },
             }}
             >
@@ -165,18 +181,19 @@ const MainSlider = (props: IProps) => {
                                     style={{
                                         position: 'relative',
                                         cursor: 'pointer',
-                                        overflow: 'hidden',
+                                        width: '100%',
+                                        height: '193px',
                                     }}
                                 >
-                                    <img
+                                    <Image
                                         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
+                                        alt={`${track.title}`}
+                                        fill
                                         style={{
-                                            width: '193px',
-                                            height: '193px',
                                             objectFit: 'cover',
-                                            display: 'block',
                                             opacity: hoveredId === track._id ? 0.7 : 1,
                                             transition: 'opacity 0.3s ease',
+                                            borderRadius: '6px',
                                         }}
                                     />
 
@@ -209,7 +226,7 @@ const MainSlider = (props: IProps) => {
                                                 fontSize: 17,
                                                 whiteSpace: 'nowrap',
                                                 overflow: 'hidden',
-                                                maxWidth: 200,
+                                                maxWidth: 180,
                                                 textOverflow: 'ellipsis',
                                                 color: '#fff',
 

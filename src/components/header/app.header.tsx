@@ -7,19 +7,21 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import UploadIcon from '@mui/icons-material/Upload';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Container } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession, signOut } from "next-auth/react"
 import { fetchDefaultImage } from '@/utils/api';
+import QueueMusicIcon from '@mui/icons-material/QueueMusic';
+import Image from 'next/image';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -134,41 +136,48 @@ export default function AppHeader() {
             }}
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
+
+            sx={{
+                "> a": {
+                    color: 'unset',
+                    textDecoration: 'unset'
+                }
+            }}
         >
-            <MenuItem>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="error">
-                        <MailIcon />
-                    </Badge>
-                </IconButton>
-                <p>Messages</p>
-            </MenuItem>
-            <MenuItem>
-                <IconButton
-                    size="large"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                >
-                    <Badge badgeContent={17} color="error">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
-            </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
+
+            <MenuItem component={Link} href={`/profile/${session?.user._id}`} onClick={handleMobileMenuClose}>
+                <IconButton size='large'>
                     <AccountCircle />
                 </IconButton>
-                <p>Profile</p>
+                Profile
+            </MenuItem>
+            <MenuItem component={Link} href="/playlist" onClick={handleMobileMenuClose}>
+                <IconButton size='large'>
+                    <QueueMusicIcon />
+                </IconButton>
+                Playlist
+            </MenuItem>
+            <MenuItem component={Link} href="/like" onClick={handleMobileMenuClose}>
+                <IconButton size='large'>
+                    <FavoriteIcon />
+                </IconButton>
+                Likes
+            </MenuItem>
+            <MenuItem component={Link} href={'/track/upload'} onClick={handleMobileMenuClose}>
+                <IconButton size='large'>
+                    <UploadIcon />
+                </IconButton>
+                Upload
+            </MenuItem>
+            <MenuItem onClick={() => { handleMenuClose(), signOut() }}>
+                <IconButton size='large'>
+                    <LogoutIcon />
+                </IconButton>
+                Logout
             </MenuItem>
         </Menu>
-    );
+    )
+
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -192,15 +201,16 @@ export default function AppHeader() {
                                 display: 'flex',
                                 alignItems: 'center'
                             }}>
-                                <img
+                                <Image
+                                    src="/audiomesh_nocolor.png"
+                                    alt="Audiomesh logo"
+                                    width={50}
+                                    height={50}
                                     style={{
-                                        width: '50px',
-                                        height: '50px',
                                         objectFit: 'contain',
                                         borderRadius: '6px',
                                     }}
-                                    src="/audiomesh_nocolor.png"
-                                    alt="Audiomesh logo" />
+                                />
                                 <span>Audiomesh</span>
                             </div>
                         </Typography>
@@ -229,12 +239,14 @@ export default function AppHeader() {
                                 <Link href={'/playlist'}>Playlists</Link>
                                 <Link href={'/like'}>Likes</Link>
                                 <Link href={'/track/upload'}>Upload</Link>
-                                <img
+
+                                <Image
                                     onClick={handleProfileMenuOpen}
-                                    src={fetchDefaultImage(session.user.type)} alt=""
+                                    src={fetchDefaultImage(session.user.type)}
+                                    alt="user"
+                                    width={40}
+                                    height={40}
                                     style={{
-                                        width: 40,
-                                        height: 40,
                                         borderRadius: 100
                                     }}
                                 />
@@ -245,16 +257,22 @@ export default function AppHeader() {
                             }
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                            <IconButton
-                                size="large"
-                                aria-label="show more"
-                                aria-controls={mobileMenuId}
-                                aria-haspopup="true"
-                                onClick={handleMobileMenuOpen}
-                                color="inherit"
-                            >
-                                <MoreIcon />
-                            </IconButton>
+                            {session ? (
+                                <IconButton
+                                    size="large"
+                                    aria-label="show more"
+                                    aria-controls={mobileMenuId}
+                                    aria-haspopup="true"
+                                    onClick={handleMobileMenuOpen}
+                                    color="inherit"
+                                >
+                                    <MoreIcon />
+                                </IconButton>
+                            ) : (
+                                <Link href="/auth/signin" style={{ color: 'white', textDecoration: 'none' }}>
+                                    Login
+                                </Link>
+                            )}
                         </Box>
                     </Toolbar>
                 </Container>

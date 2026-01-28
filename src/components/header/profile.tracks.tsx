@@ -31,7 +31,28 @@ const ProfileTrack = (props: IProps) => {
                             color: '#fff'
                         }}
                         href={`/track/${convertSlugUrl(data.title)}-${data._id}.html?audio=${data.trackUrl}`}>
-                        <Typography component="div" variant="h5">
+                        <Typography
+                            component="div"
+                            variant="h5"
+                            sx={{
+                                maxWidth: {
+                                    xs: 170,
+                                    sm: '100%',
+                                },
+                                whiteSpace: {
+                                    xs: 'nowrap',
+                                    sm: 'normal',
+                                },
+                                overflow: {
+                                    xs: 'hidden',
+                                    sm: 'visible',
+                                },
+                                textOverflow: {
+                                    xs: 'ellipsis',
+                                    sm: 'unset',
+                                },
+                            }}
+                        >
                             {data.title}
                         </Typography>
                     </Link>
@@ -39,7 +60,25 @@ const ProfileTrack = (props: IProps) => {
                     <Typography
                         variant="subtitle1"
                         component="div"
-                        sx={{ color: 'text.secondary' }}
+                        sx={{
+                            color: 'text.secondary',
+                            maxWidth: {
+                                xs: 165,
+                                sm: '100%',
+                            },
+                            whiteSpace: {
+                                xs: 'nowrap',
+                                sm: 'normal',
+                            },
+                            overflow: {
+                                xs: 'hidden',
+                                sm: 'visible',
+                            },
+                            textOverflow: {
+                                xs: 'ellipsis',
+                                sm: 'unset',
+                            },
+                        }}
                     >
                         {data.description}
                     </Typography>
@@ -79,7 +118,7 @@ const ProfileTrack = (props: IProps) => {
                 component="img"
                 sx={{
                     width: 151,
-                    height: 154,
+                    height: '100%',
                     position: 'absolute',
                     right: 0,
                     top: 0,

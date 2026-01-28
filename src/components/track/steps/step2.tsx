@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { sendRequest } from '@/utils/api';
 import { useToast } from '@/utils/toast';
+import Image from 'next/image';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
@@ -65,7 +66,12 @@ function InputFileUpload(props: any) {
             variant="contained"
             startIcon={<CloudUploadIcon />}
         >
-            Upload file
+            <Box sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                Upload file
+            </Box>
+            <Box sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                Upload
+            </Box>
             <VisuallyHiddenInput
                 type="file"
                 onChange={(event) => console.log(event.target.files)}
@@ -171,7 +177,12 @@ const Step2 = (props: IProps) => {
                 <LinearProgressWithLabel value={trackUpload.percent} />
             </Box>
 
-            <Grid container spacing={2} mt={5}>
+            <Grid
+                container
+                spacing={2}
+                mt={5}
+                display={'flex'}
+                alignItems={'center'}            >
                 <Grid
                     size={{ xs: 6, md: 4 }}
                     style={{
@@ -180,23 +191,31 @@ const Step2 = (props: IProps) => {
                         alignItems: 'center'
                     }}
                 >
-                    <div style={{
-                        width: '250px',
-                        height: '250px',
+                    <Box sx={{
+                        width: '100%',
+                        maxWidth: {
+                            xs: 140,
+                            sm: 180,
+                            md: 220,
+                            lg: 250,
+                        },
+                        aspectRatio: '1 / 1',
                         backgroundColor: '#ccc',
-                        marginBottom: '20px'
+                        marginBottom: '20px',
+                        position: 'relative'
                     }}>
                         {info.imgUrl &&
-                            <img
+                            <Image
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`}
+                                alt='upload-image'
+                                fill
                                 style={{
-                                    width: '100%',
-                                    height: '100%',
                                     objectFit: 'cover'
                                 }}
-                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`}
-                            />}
+                            />
+                        }
 
-                    </div>
+                    </Box>
 
                     <InputFileUpload
                         setInfo={setInfo}
@@ -211,7 +230,6 @@ const Step2 = (props: IProps) => {
                         })}
                         value={info.title}
                         sx={{
-                            mb: 2,
                             '& .MuiInputBase-input': {
                                 paddingLeft: '3px',
                             },
@@ -232,7 +250,6 @@ const Step2 = (props: IProps) => {
                         })}
                         value={info.description}
                         sx={{
-                            mb: 2,
                             '& .MuiInputBase-input': {
                                 paddingLeft: '3px',
                             },
@@ -252,7 +269,6 @@ const Step2 = (props: IProps) => {
                             category: e.target.value
                         })}
                         value={info.category}
-                        sx={{ mb: 2 }}
                         label="Category"
                         fullWidth
                         variant="standard"
@@ -269,7 +285,8 @@ const Step2 = (props: IProps) => {
                     <Button onClick={() => handleSubmit()}
                         variant="outlined"
                         color="primary"
-                        sx={{ mt: 2 }}>
+                        sx={{ mt: 2 }}
+                    >
                         SAVE
                     </Button>
                 </Grid>

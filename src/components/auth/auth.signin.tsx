@@ -8,6 +8,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/navigation'
+import Image from "next/image";
 
 const AuthSignIn = () => {
     const router = useRouter()
@@ -104,10 +105,10 @@ const AuthSignIn = () => {
                                     textDecoration: 'none',
                                     color: '#fff',
                                 }}>
-                                <img
+                                <Image
+                                    width={50}
+                                    height={50}
                                     style={{
-                                        width: '50px',
-                                        height: '50px',
                                         objectFit: 'contain',
                                         borderRadius: '6px',
                                     }}
@@ -118,6 +119,7 @@ const AuthSignIn = () => {
                                     fontSize: 25,
                                     fontWeight: 600
                                 }}>Audiomesh</h3>
+
                             </Link>
                         </div>
 
