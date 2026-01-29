@@ -38,7 +38,11 @@ const AppFooter = () => {
                         top: 'auto',
                         bottom: 0,
                         backgroundColor: '#303030',
-
+                        display: {
+                            xs: 'none',
+                            sm: 'none',
+                            md: 'flex',
+                        },
                         '& .rhap_time': {
                             color: '#fff',
                         },

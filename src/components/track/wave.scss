@@ -1,22 +1,22 @@
 .container {
     width: 100%;
-    height: 380px;
+    min-height: 380px;
     background-color: #1f1f1f;
     padding: 15px;
     position: relative;
     margin-top: 30px;
     border-radius: 25px;
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
 }
 
 .song {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    flex: 1;
+    margin-right: 0;
     position: relative;
-    width: 100%;
-    margin: 0 40px 20px 0;
 }
 
 .song-control {
@@ -64,11 +64,8 @@
 }
 
 .audio {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 15px;
+    position: relative;
+    padding: 15px 0 0;
 }
 
 .waveform {
@@ -125,12 +122,11 @@
 
 
 .song-img {
-    width: 400px;
+    width: 360px;
     height: 320px;
-    background: linear-gradient(135deg,
-            #2a2a2a 0%,
-            #121212 100%);
+    flex-shrink: 0;
     border-radius: 20px;
+    background: linear-gradient(135deg, #2a2a2a, #121212);
 
     .image {
         width: 100%;
@@ -144,4 +140,75 @@
     width: 100%;
     height: 100%;
     background-color: #ccc;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .song-img {
+        width: 100%;
+        height: 220px;
+        order: -1;
+    }
+
+    .song {
+        margin: 0;
+    }
+
+    .song-control {
+        align-items: center;
+    }
+
+    .song-btn {
+        width: 60px;
+        height: 60px;
+
+        .icon {
+            width: 42px;
+            height: 42px;
+        }
+    }
+
+    .song-name {
+        font-size: 18px;
+    }
+
+    .song-author {
+        font-size: 13px;
+    }
+
+    .audio {
+        padding-top: 10px;
+    }
+
+    .waveform {
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .song-btn {
+        width: 52px;
+        height: 52px;
+
+        .icon {
+            width: 36px;
+            height: 36px;
+        }
+    }
+
+    .song-name {
+        font-size: 16px;
+    }
+
+    .song-author {
+        font-size: 12px;
+    }
+
+    .song-img {
+        height: 180px;
+    }
 }

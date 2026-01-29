@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import { useSession, signOut } from "next-auth/react"
 import { fetchDefaultImage } from '@/utils/api';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
+import HomeIcon from '@mui/icons-material/Home';
 import Image from 'next/image';
 
 const Search = styled('div')(({ theme }) => ({
@@ -33,9 +34,14 @@ const Search = styled('div')(({ theme }) => ({
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('xs')]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        display: 'none'
+    },
+    [theme.breakpoints.up('sm')]: {
+        display: 'block',
+        width: '100%',
+        marginLeft: theme.spacing(2),
     },
 }));
 
@@ -53,13 +59,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '400px',
-        },
     },
 }));
 
@@ -144,33 +146,38 @@ export default function AppHeader() {
                 }
             }}
         >
-
+            <MenuItem component={Link} href={`/`} onClick={handleMobileMenuClose}>
+                <IconButton size='small'>
+                    <HomeIcon />
+                </IconButton>
+                Home
+            </MenuItem>
             <MenuItem component={Link} href={`/profile/${session?.user._id}`} onClick={handleMobileMenuClose}>
-                <IconButton size='large'>
+                <IconButton size='small'>
                     <AccountCircle />
                 </IconButton>
                 Profile
             </MenuItem>
             <MenuItem component={Link} href="/playlist" onClick={handleMobileMenuClose}>
-                <IconButton size='large'>
+                <IconButton size='small'>
                     <QueueMusicIcon />
                 </IconButton>
                 Playlist
             </MenuItem>
             <MenuItem component={Link} href="/like" onClick={handleMobileMenuClose}>
-                <IconButton size='large'>
+                <IconButton size='small'>
                     <FavoriteIcon />
                 </IconButton>
                 Likes
             </MenuItem>
             <MenuItem component={Link} href={'/track/upload'} onClick={handleMobileMenuClose}>
-                <IconButton size='large'>
+                <IconButton size='small'>
                     <UploadIcon />
                 </IconButton>
                 Upload
             </MenuItem>
             <MenuItem onClick={() => { handleMenuClose(), signOut() }}>
-                <IconButton size='large'>
+                <IconButton size='small'>
                     <LogoutIcon />
                 </IconButton>
                 Logout
@@ -189,10 +196,8 @@ export default function AppHeader() {
                     <Toolbar>
                         <Typography
                             variant="h6"
-                            noWrap
                             component="div"
                             sx={{
-                                display: { xs: 'none', sm: 'block' },
                                 cursor: 'pointer'
                             }}
                             onClick={() => handleRedirectHome()}

@@ -1,5 +1,5 @@
 import { fetchDefaultImage, sendRequest } from "@/utils/api"
-import { Grid, IconButton, InputAdornment, TextField } from "@mui/material"
+import { Box, Grid, IconButton, InputAdornment, TextField } from "@mui/material"
 import { useSession } from "next-auth/react"
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -108,7 +108,7 @@ const CommentTrack = (props: IProps) => {
                 mt={5}
             >
                 <Grid
-                    size={{ xs: 2, xl: 3 }}
+                    size={{ xs: 12, sm: 3 }}
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -116,16 +116,24 @@ const CommentTrack = (props: IProps) => {
                     }}
                 >
                     {session &&
-                        <Image
-                            src={fetchDefaultImage(session?.user.type)}
-                            alt="user comment"
-                            height={150}
-                            width={150}
-                            style={{
-                                borderRadius: '50%',
-                                border: '3px solid #1db954',
+                        <Box
+                            sx={{
+                                width: { xs: 100, md: 150 },
+                                height: { xs: 100, md: 150 },
+                                position: 'relative',
                             }}
-                        />
+                        >
+                            <Image
+                                src={fetchDefaultImage(session?.user.type)}
+                                alt="user comment"
+                                fill
+                                style={{
+                                    borderRadius: '50%',
+                                    border: '3px solid #1db954',
+                                }}
+                            />
+                        </Box>
+
                     }
                     <p
                         style={{
@@ -139,7 +147,7 @@ const CommentTrack = (props: IProps) => {
                 </Grid>
 
                 <Grid
-                    size={{ xs: 10, xl: 9 }}
+                    size={{ xs: 12, sm: 9 }}
                     sx={{
                         backgroundColor: '#1e1e1e',
                         borderRadius: 3,

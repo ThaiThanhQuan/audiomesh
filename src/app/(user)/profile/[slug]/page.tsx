@@ -1,31 +1,38 @@
 import ProfileTrack from "@/components/header/profile.tracks"
 import { sendRequest } from "@/utils/api"
-import { Container, Grid } from "@mui/material"
+import { Container } from "@mui/material"
 
-const ProfilePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+
+const ProfilePage = async ({ params, searchParams }: {
+    params: Promise<{
+        slug: string
+    }>
+    searchParams: Promise<{
+        current?: string
+    }>
+}) => {
 
     const { slug } = await params
+    const { current } = await searchParams
+    const page = Number(current ?? 1)
 
     const tracks = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
-        url: 'http://localhost:8000/api/v1/tracks/users?current=1&pageSize=30',
+        url: 'http://localhost:8000/api/v1/tracks/users',
         method: 'post',
+        queryParams: {
+            current: page,
+            pageSize: 10,
+        },
         body: { id: slug }
     })
 
-    const data = tracks.data?.result ?? []
 
     return (
         <Container sx={{ my: 5 }}>
-            <Grid container spacing={5}>
-                {data.map((item, index) => {
-                    return (
-                        <Grid size={{ xs: 12, md: 6 }} key={index}>
-                            <ProfileTrack data={item} />
-                        </Grid>
-                    )
-                })}
-            </Grid>
-
+            <ProfileTrack
+                data={tracks.data?.result ?? []}
+                meta={tracks.data!.meta}
+            />
         </Container >
 
 

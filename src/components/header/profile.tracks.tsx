@@ -12,122 +12,165 @@ import { useTrackContext } from '@/lib/track.wrapper';
 import PauseIcon from '@mui/icons-material/Pause';
 import Link from 'next/link';
 import { convertSlugUrl } from '@/utils/api';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Grid, TablePagination } from '@mui/material';
 
 interface IProps {
-    data: ITrackTop
+    data: ITrackTop[],
+    meta: IPaginateMeta
 }
 
 const ProfileTrack = (props: IProps) => {
-    const { data } = props
+    const { data, meta } = props
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
+    const router = useRouter()
+    const searchParams = useSearchParams()
 
     return (
-        <Card sx={{ display: 'flex', position: 'relative' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Link
-                        style={{
-                            textDecoration: 'none',
-                            color: '#fff'
-                        }}
-                        href={`/track/${convertSlugUrl(data.title)}-${data._id}.html?audio=${data.trackUrl}`}>
-                        <Typography
-                            component="div"
-                            variant="h5"
-                            sx={{
-                                maxWidth: {
-                                    xs: 170,
-                                    sm: '100%',
-                                },
-                                whiteSpace: {
-                                    xs: 'nowrap',
-                                    sm: 'normal',
-                                },
-                                overflow: {
-                                    xs: 'hidden',
-                                    sm: 'visible',
-                                },
-                                textOverflow: {
-                                    xs: 'ellipsis',
-                                    sm: 'unset',
-                                },
-                            }}
-                        >
-                            {data.title}
-                        </Typography>
-                    </Link>
+        <>
+            <Grid container spacing={5}>
+                {data.map(data => (
+                    <Grid size={{ xs: 12, md: 6 }} key={data._id}>
+                        <Card sx={{ display: 'flex', position: 'relative' }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                <CardContent sx={{ flex: '1 0 auto' }}>
+                                    <Link
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: '#fff'
+                                        }}
+                                        href={`/track/${convertSlugUrl(data.title)}-${data._id}.html?audio=${data.trackUrl}`}>
+                                        <Typography
+                                            component="div"
+                                            variant="h5"
+                                            sx={{
+                                                maxWidth: {
+                                                    xs: 170,
+                                                    sm: '100%',
+                                                },
+                                                whiteSpace: {
+                                                    xs: 'nowrap',
+                                                    sm: 'normal',
+                                                },
+                                                overflow: {
+                                                    xs: 'hidden',
+                                                    sm: 'visible',
+                                                },
+                                                textOverflow: {
+                                                    xs: 'ellipsis',
+                                                    sm: 'unset',
+                                                },
+                                            }}
+                                        >
+                                            {data.title}
+                                        </Typography>
+                                    </Link>
 
-                    <Typography
-                        variant="subtitle1"
-                        component="div"
-                        sx={{
-                            color: 'text.secondary',
-                            maxWidth: {
-                                xs: 165,
-                                sm: '100%',
-                            },
-                            whiteSpace: {
-                                xs: 'nowrap',
-                                sm: 'normal',
-                            },
-                            overflow: {
-                                xs: 'hidden',
-                                sm: 'visible',
-                            },
-                            textOverflow: {
-                                xs: 'ellipsis',
-                                sm: 'unset',
-                            },
-                        }}
-                    >
-                        {data.description}
-                    </Typography>
-                </CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                    <IconButton aria-label="previous">
-                        <SkipPreviousIcon />
-                    </IconButton>
-                    {
-                        (data._id !== currentTrack._id || (data._id === currentTrack._id && currentTrack.isPlaying === false))
-                            ?
-                            <IconButton
-                                aria-label="play/pause"
-                                onClick={() => setCurrentTrack({ ...data, isPlaying: true })}
-                            >
+                                    <Typography
+                                        variant="subtitle1"
+                                        component="div"
+                                        sx={{
+                                            color: 'text.secondary',
+                                            maxWidth: {
+                                                xs: 165,
+                                                sm: '100%',
+                                            },
+                                            whiteSpace: {
+                                                xs: 'nowrap',
+                                                sm: 'normal',
+                                            },
+                                            overflow: {
+                                                xs: 'hidden',
+                                                sm: 'visible',
+                                            },
+                                            textOverflow: {
+                                                xs: 'ellipsis',
+                                                sm: 'unset',
+                                            },
+                                        }}
+                                    >
+                                        {data.description}
+                                    </Typography>
+                                </CardContent>
+                                <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                                    <IconButton aria-label="previous">
+                                        <SkipPreviousIcon />
+                                    </IconButton>
+                                    {
+                                        (data._id !== currentTrack._id || (data._id === currentTrack._id && currentTrack.isPlaying === false))
+                                            ?
+                                            <IconButton
+                                                aria-label="play/pause"
+                                                onClick={() => setCurrentTrack({ ...data, isPlaying: true })}
+                                            >
 
-                                <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                            </IconButton> :
+                                                <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                                            </IconButton> :
 
-                            <IconButton
-                                aria-label="play/pause"
-                                onClick={() => setCurrentTrack({ ...data, isPlaying: false })}
-                            >
+                                            <IconButton
+                                                aria-label="play/pause"
+                                                onClick={() => setCurrentTrack({ ...data, isPlaying: false })}
+                                            >
 
-                                <PauseIcon sx={{ height: 38, width: 38 }} />
-                            </IconButton>
+                                                <PauseIcon sx={{ height: 38, width: 38 }} />
+                                            </IconButton>
 
-                    }
-                    <IconButton aria-label="next">
-                        <SkipNextIcon />
-                    </IconButton>
-                </Box>
-            </Box>
+                                    }
+                                    <IconButton aria-label="next">
+                                        <SkipNextIcon />
+                                    </IconButton>
+                                </Box>
+                            </Box>
 
 
-            <CardMedia
-                component="img"
+                            <CardMedia
+                                component="img"
+                                sx={{
+                                    width: 151,
+                                    height: '100%',
+                                    position: 'absolute',
+                                    right: 0,
+                                    top: 0,
+                                    bottom: 0
+                                }}
+                                image={`http://localhost:8000/images/${data.imgUrl}`}
+                                alt="Live from space album cover"
+                            />
+                        </Card >
+                    </Grid>
+                ))}
+            </Grid>
+
+            <Box
                 sx={{
-                    width: 151,
-                    height: '100%',
-                    position: 'absolute',
-                    right: 0,
-                    top: 0,
-                    bottom: 0
+                    // display: 'flex',
+                    // justifyContent: 'flex-end',
+                    mt: 2,
+                    pr: 2,
                 }}
-                image={`http://localhost:8000/images/${data.imgUrl}`}
-                alt="Live from space album cover"
-            />
-        </Card >
+            >
+                <TablePagination
+                    component="div"
+                    count={meta.total}
+                    page={meta.current - 1}
+                    rowsPerPage={meta.pageSize}
+                    rowsPerPageOptions={[]}
+                    sx={{
+                        '& .MuiTablePagination-displayedRows': {
+                            fontSize: '20px',
+                        },
+                        '& .MuiSvgIcon-root': {
+                            fontSize: '40px',
+                        },
+                    }}
+                    onPageChange={(_, newPage) => {
+                        const params = new URLSearchParams(searchParams.toString())
+                        params.set('current', String(newPage + 1))
+                        router.push(`?${params.toString()}`)
+                    }}
+                />
+            </Box>
+        </>
     );
 }
 
