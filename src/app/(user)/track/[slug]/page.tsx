@@ -3,6 +3,7 @@ import { sendRequest } from '@/utils/api'
 import { Container } from '@mui/material'
 
 import type { Metadata, ResolvingMetadata } from 'next'
+import { notFound } from 'next/navigation'
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -58,6 +59,10 @@ const DetailTrackPage = async ({ params }: { params: Promise<{ slug: string }> }
             sort: '-createdAt'
         }
     })
+
+    if (!res.data) {
+        notFound()
+    }
 
     return (
         <Container>
