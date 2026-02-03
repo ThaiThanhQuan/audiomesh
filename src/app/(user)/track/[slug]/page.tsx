@@ -3,6 +3,7 @@ import { sendRequest } from '@/utils/api'
 import { Container } from '@mui/material'
 
 import type { Metadata, ResolvingMetadata } from 'next'
+import next from 'next'
 import { notFound } from 'next/navigation'
 
 type Props = {
@@ -36,6 +37,14 @@ export async function generateMetadata(
     }
 }
 
+export async function generateStaticParams() {
+    return [
+        { slug: 'hen-gap-em-duoi-anh-trang-6978327c208eff5952fe3a7a.html' },
+        { slug: 'chi-mot-dem-nua-thoi-69783449208eff5952fe3ade.htmll' },
+        { slug: 'ngay-buon-thang-nho-nam-thuong..-69783545208eff5952fe3af0.html' }
+    ]
+}
+
 const DetailTrackPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params
 
@@ -46,7 +55,10 @@ const DetailTrackPage = async ({ params }: { params: Promise<{ slug: string }> }
     const res = await sendRequest<IBackendRes<ITrackTop>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
         method: 'GET',
-        nextOption: { cache: 'no-store' }
+        nextOption: {
+            // cache: 'no-store',
+            next: { tags: ['track-by-id'] }
+        }
     })
 
     const comments = await sendRequest<IBackendRes<IModelPaginate<IComment>>>({

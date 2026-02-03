@@ -148,6 +148,15 @@ const Step2 = (props: IProps) => {
             setValue(0)
             toast.success(res.message)
 
+            await sendRequest<IBackendRes<any>>({
+                url: `/api/revalidate`,
+                method: 'POST',
+                queryParams: {
+                    tag: 'track-by-profile',
+                    secret: process.env.REVALIDATE_SECRET
+                }
+            })
+
         } else {
             toast.error(res.message)
         }

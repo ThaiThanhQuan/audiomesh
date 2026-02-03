@@ -2,7 +2,6 @@ import ProfileTrack from "@/components/header/profile.tracks"
 import { sendRequest } from "@/utils/api"
 import { Container } from "@mui/material"
 
-
 const ProfilePage = async ({ params, searchParams }: {
     params: Promise<{
         slug: string
@@ -23,7 +22,10 @@ const ProfilePage = async ({ params, searchParams }: {
             current: page,
             pageSize: 10,
         },
-        body: { id: slug }
+        body: { id: slug },
+        nextOption: {
+            next: { tags: ['track-by-profile'] }
+        }
     })
 
 
