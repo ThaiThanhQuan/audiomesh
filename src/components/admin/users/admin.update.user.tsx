@@ -59,7 +59,7 @@ const AdminUpdateUser = (props: IProps) => {
         console.log(form);
 
         const updateUser = await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
-            url: 'http://localhost:8000/api/v1/users',
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users`,
             method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${session?.access_token}`,

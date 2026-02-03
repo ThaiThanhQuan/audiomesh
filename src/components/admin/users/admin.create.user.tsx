@@ -64,7 +64,7 @@ const AdminCreateUser = (props: IProps) => {
         console.log(form);
 
         const createUser = await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
-            url: 'http://localhost:8000/api/v1/users',
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${session?.access_token}`,

@@ -33,7 +33,7 @@ const AdminTracks = (props: IProps) => {
     const [selectedTrack, setSelectedTrack] = useState<ITrackTop | null>(null);
 
     const handleDelete = async (id: string) => {
-        const res = await fetch(`http://localhost:8000/api/v1/tracks/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`, {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${access_token}`,

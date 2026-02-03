@@ -8,7 +8,7 @@ export default async function Home() {
   const session = await getServerSession(authOptions)
 
   const chill = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: 'http://localhost:8000/api/v1/tracks/top',
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/top`,
     method: 'post',
     body: {
       category: 'CHILL',
@@ -17,7 +17,7 @@ export default async function Home() {
   })
 
   const party = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: 'http://localhost:8000/api/v1/tracks/top',
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/top`,
     method: 'post',
     body: {
       category: 'PARTY',
@@ -26,7 +26,7 @@ export default async function Home() {
   })
 
   const workout = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: 'http://localhost:8000/api/v1/tracks/top',
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/top`,
     method: 'post',
     body: {
       category: 'WORKOUT',

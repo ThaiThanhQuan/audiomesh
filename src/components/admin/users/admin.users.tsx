@@ -40,7 +40,7 @@ const AdminUsers = (props: IProps) => {
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
     const handleDelete = async (id: string) => {
-        const res = await fetch(`http://localhost:8000/api/v1/users/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/${id}`, {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${access_token}`,

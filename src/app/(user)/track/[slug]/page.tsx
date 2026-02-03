@@ -20,7 +20,7 @@ export async function generateMetadata(
     const id = slugSegments[slugSegments.length - 1]
 
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `http://localhost:8000/api/v1/tracks/${id}`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
         method: 'GET',
     })
 
@@ -31,7 +31,7 @@ export async function generateMetadata(
             title: res.data?.title,
             description: res.data?.description,
             type: 'website',
-            images: [`http://localhost:8000/images/${res.data?.imgUrl}`],
+            images: [`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${res.data?.imgUrl}`],
         }
     }
 }
@@ -44,13 +44,13 @@ const DetailTrackPage = async ({ params }: { params: Promise<{ slug: string }> }
     const id = slugSegments[slugSegments.length - 1]
 
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `http://localhost:8000/api/v1/tracks/${id}`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
         method: 'GET',
         nextOption: { cache: 'no-store' }
     })
 
     const comments = await sendRequest<IBackendRes<IModelPaginate<IComment>>>({
-        url: `http://localhost:8000/api/v1/tracks/comments`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/comments`,
         method: 'POST',
         queryParams: {
             current: 1,

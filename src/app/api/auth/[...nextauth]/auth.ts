@@ -16,7 +16,7 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials, req) {
                 const res = await sendRequest<IBackendRes<JWT>>({
-                    url: 'http://localhost:8000/api/v1/auth/login',
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
                     method: 'post',
                     body: {
                         username: credentials?.username,
@@ -39,7 +39,7 @@ export const authOptions: AuthOptions = {
         async jwt({ token, trigger, user, account, profile, }) {
             if (trigger === 'signIn' && account?.provider !== 'credentials') {
                 const res = await sendRequest<IBackendRes<JWT>>({
-                    url: 'http://localhost:8000/api/v1/auth/social-media',
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/social-media`,
                     method: 'post',
                     body: {
                         type: account?.provider?.toUpperCase(),

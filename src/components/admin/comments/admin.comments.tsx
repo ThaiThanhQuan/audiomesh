@@ -33,7 +33,7 @@ const AdminComments = (props: IProps) => {
     const [selectedComment, setSelectedComment] = useState<IComment | null>(null);
 
     const handleDelete = async (id: string) => {
-        const res = await fetch(`http://localhost:8000/api/v1/comments/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments/${id}`, {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${access_token}`,

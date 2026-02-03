@@ -17,7 +17,7 @@ const ProfilePage = async ({ params, searchParams }: {
     const page = Number(current ?? 1)
 
     const tracks = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
-        url: 'http://localhost:8000/api/v1/tracks/users',
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/users`,
         method: 'post',
         queryParams: {
             current: page,
