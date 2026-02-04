@@ -61,7 +61,7 @@ const LikeTrack = (props: IProps) => {
             method: 'POST',
             queryParams: {
                 tag: 'track-by-id',
-                secret: process.env.REVALIDATE_SECRET
+                secret: 'justASecretForJWT'
             }
         })
         router.refresh()

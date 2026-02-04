@@ -3,7 +3,6 @@ import { sendRequest } from '@/utils/api'
 import { Container } from '@mui/material'
 
 import type { Metadata, ResolvingMetadata } from 'next'
-import next from 'next'
 import { notFound } from 'next/navigation'
 
 type Props = {

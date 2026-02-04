@@ -153,7 +153,7 @@ const Step2 = (props: IProps) => {
                 method: 'POST',
                 queryParams: {
                     tag: 'track-by-profile',
-                    secret: process.env.REVALIDATE_SECRET
+                    secret: 'justASecretForJWT'
                 }
             })
 

@@ -35,6 +35,17 @@ declare global {
         countPlay: number
     }
 
+    interface IPlayList {
+        _id: string,
+        title: string,
+        isPublic: boolean,
+        user: string,
+        tracks: ITrackTop[],
+        isDeleted: boolean,
+        createdAt: string,
+        updatedAt: string,
+    }
+
     interface IPaginateMeta {
         current: number;
         pageSize: number;
