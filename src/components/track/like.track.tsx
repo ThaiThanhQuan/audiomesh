@@ -60,7 +60,7 @@ const LikeTrack = (props: IProps) => {
             url: `/api/revalidate`,
             method: 'POST',
             queryParams: {
-                tag: 'track-by-id',
+                tag: ['track-by-id', 'liked-by-user'],
                 secret: 'justASecretForJWT'
             }
         })
