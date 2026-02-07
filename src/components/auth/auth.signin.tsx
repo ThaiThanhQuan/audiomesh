@@ -284,7 +284,7 @@ const AuthSignIn = () => {
                             gap: 16
                         }}>
                             <GitHubIcon onClick={() => signIn('github')} sx={{ fontSize: 35, cursor: 'pointer' }} titleAccess="Login with Github" />
-                            <GoogleIcon sx={{ fontSize: 35, cursor: 'pointer' }} titleAccess="Login with Google" />
+                            <GoogleIcon onClick={() => signIn('google')} sx={{ fontSize: 35, cursor: 'pointer' }} titleAccess="Login with Google" />
                         </div>
                         <p style={{
                             fontSize: 14,
