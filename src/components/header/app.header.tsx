@@ -23,6 +23,7 @@ import { fetchDefaultImage } from '@/utils/api';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import HomeIcon from '@mui/icons-material/Home';
 import Image from 'next/image';
+import ActiveLink from './active.link';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -241,16 +242,31 @@ export default function AppHeader() {
                             alignItems: 'center',
                             gap: '25px',
                             cursor: 'pointer',
-                            "> a": {
-                                color: 'unset',
-                                textDecoration: 'unset'
+                            "& a": {
+                                color: '#b3bcc7',
+                                textDecoration: 'none',
+                                padding: '6px 12px',
+                                borderRadius: '8px',
+                                fontWeight: 500,
+                                transition: 'all 0.25s ease',
+
+                                "&:hover": {
+                                    backgroundColor: '#2a3441',
+                                    color: '#e6faff'
+                                }
+                            },
+
+                            "& a.active": {
+                                background: 'linear-gradient(135deg, #2f3c4a, #394b5a)',
+                                color: '#9ff3ff',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.35)',
                             }
                         }}>
-                            {session?.user?.role === "ADMIN" && <Link href={'/admin'}>Admin</Link>}
+                            {session?.user?.role === "ADMIN" && <ActiveLink href={'/admin'}>Admin</ActiveLink>}
                             {session ? <>
-                                <Link href={'/playlist'}>Playlists</Link>
-                                <Link href={'/like'}>Likes</Link>
-                                <Link href={'/track/upload'}>Upload</Link>
+                                <ActiveLink href={'/playlist'}>Playlists</ActiveLink>
+                                <ActiveLink href={'/like'}>Likes</ActiveLink>
+                                <ActiveLink href={'/track/upload'}>Upload</ActiveLink>
 
                                 <Image
                                     onClick={handleProfileMenuOpen}
