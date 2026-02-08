@@ -38,9 +38,6 @@ const AdminUsersPage = async ({
         },
     });
 
-    console.log('getUser: ', getUser)
-
-
     return (
         <>
             <AdminUsers

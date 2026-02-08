@@ -31,7 +31,6 @@ function InputFileUpload() {
             Upload file
             <VisuallyHiddenInput
                 type="file"
-                onChange={(event) => console.log(event.target.files)}
             />
         </Button>
     );

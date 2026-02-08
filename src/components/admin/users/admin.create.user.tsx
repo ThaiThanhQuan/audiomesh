@@ -61,7 +61,6 @@ const AdminCreateUser = (props: IProps) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(form);
 
         const createUser = await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users`,

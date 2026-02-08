@@ -74,7 +74,6 @@ function InputFileUpload(props: any) {
             </Box>
             <VisuallyHiddenInput
                 type="file"
-                onChange={(event) => console.log(event.target.files)}
             />
         </Button>
     );

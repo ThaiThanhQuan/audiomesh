@@ -22,7 +22,6 @@ const SearchTrack = () => {
             }
         })
         if (res.data?.result) {
-            console.log('res: ', res.data?.result)
             setTracks(res.data?.result)
         }
     }

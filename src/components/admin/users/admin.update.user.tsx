@@ -56,7 +56,6 @@ const AdminUpdateUser = (props: IProps) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(form);
 
         const updateUser = await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users`,
