@@ -1,22 +1,27 @@
-import { sendRequest } from "@/utils/api"
-import { AuthOptions } from "next-auth"
-import { JWT } from "next-auth/jwt"
-import GithubProvider from "next-auth/providers/github"
-import CredentialsProvider from "next-auth/providers/credentials"
+import NextAuth from "next-auth"
+import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import dayjs from "dayjs"
+import { AuthOptions } from 'next-auth';
+import { sendRequest } from "../../../../utils/api";
+import { JWT } from "next-auth/jwt";
+import CredentialsProvider from "next-auth/providers/credentials";
+import dayjs from "dayjs";
 
 async function refreshAccessToken(token: JWT) {
+
     const res = await sendRequest<IBackendRes<JWT>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh`,
-        method: 'post',
-        body: { refresh_token: token.refresh_token }
+        method: "POST",
+        body: { refresh_token: token?.refresh_token + "abc" }
     })
 
     if (res.data) {
+        console.log(">>> check old token: ", token.access_token);
+        console.log(">>> check new token: ", res.data?.access_token)
+
         return {
             ...token,
-            access_token: res.data?.access_token ?? '',
+            access_token: res.data?.access_token ?? "",
             refresh_token: res.data?.refresh_token ?? "",
             access_expire: dayjs(new Date()).add(
                 +(process.env.TOKEN_EXPIRE_NUMBER as string), (process.env.TOKEN_EXPIRE_UNIT as any)
@@ -26,33 +31,35 @@ async function refreshAccessToken(token: JWT) {
     } else {
         return {
             ...token,
-            error: 'RefreshAccessTokenError'
+            error: "RefreshAccessTokenError",
         }
     }
+
 }
 
 export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
-            name: 'Audiomesh',
+            name: "Audiomesh",
             credentials: {
-                username: { label: "Username", type: "text" },
+                username: { label: "Username", type: "text", },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
                 const res = await sendRequest<IBackendRes<JWT>>({
                     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
-                    method: 'post',
+                    method: "POST",
                     body: {
                         username: credentials?.username,
                         password: credentials?.password
-                    }
+                    },
                 })
+
                 if (res && res.data) {
-                    return res.data as any
+                    return res.data as any;
                 } else {
-                    throw new Error(res.message as string)
+                    throw new Error(res?.message as string)
                 }
             }
         }),
@@ -66,55 +73,62 @@ export const authOptions: AuthOptions = {
         }),
     ],
     callbacks: {
-        async jwt({ token, trigger, user, account, profile, }) {
-            if (trigger === 'signIn' && account?.provider !== 'credentials') {
+        async jwt({ token, user, account, profile, trigger }) {
+            if (trigger === "signIn" && account?.provider !== "credentials") {
                 const res = await sendRequest<IBackendRes<JWT>>({
                     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/social-media`,
-                    method: 'post',
+                    method: "POST",
                     body: {
-                        type: account?.provider?.toUpperCase(),
-                        username: user.email,
-                    }
+                        type: account?.provider?.toLocaleUpperCase(),
+                        username: user.email
+                    },
                 })
                 if (res.data) {
-                    token.access_token = res.data.access_token
-                    token.refresh_token = res.data.refresh_token
-                    token.user = res.data.user
+                    token.access_token = res.data?.access_token;
+                    token.refresh_token = res.data.refresh_token;
+                    token.user = res.data.user;
                     token.access_expire = dayjs(new Date()).add(
                         +(process.env.TOKEN_EXPIRE_NUMBER as string), (process.env.TOKEN_EXPIRE_UNIT as any)
-                    ).unix()
+                    ).unix();
                 }
             }
 
-            if (trigger === 'signIn' && account?.provider === 'credentials') {
-                // @ts-ignore
-                token.access_token = user.access_token
-                // @ts-ignore
-                token.refresh_token = user.refresh_token
-                // @ts-ignore
-                token.user = user.user
-                // @ts-ignore
+            if (trigger === "signIn" && account?.provider === "credentials") {
+                //@ts-ignore
+                token.access_token = user.access_token;
+                //@ts-ignore
+                token.refresh_token = user.refresh_token;
+                //@ts-ignore
+                token.user = user.user;
+                //@ts-ignore
                 token.access_expire = dayjs(new Date()).add(
                     +(process.env.TOKEN_EXPIRE_NUMBER as string), (process.env.TOKEN_EXPIRE_UNIT as any)
-                ).unix()
+
+                ).unix();
+
             }
 
-            const isTimeAfter = dayjs(dayjs(new Date())).isAfter(dayjs.unix((token?.access_expire as number ?? 0)))
+            const isTimeAfter = dayjs(dayjs(new Date())).isAfter(dayjs.unix((token?.access_expire as number ?? 0)));
+
             if (isTimeAfter) {
                 return refreshAccessToken(token)
             }
 
-            return token
+            return token;
         },
-        async session({ session, token, user }) {
+        session({ session, token, user }) {
             if (token) {
-                session.access_token = token.access_token
-                session.refresh_token = token.refresh_token
-                session.user = token.user
-                session.access_expire = token.access_expire
+                session.access_token = token.access_token;
+                session.refresh_token = token.refresh_token;
+                session.user = token.user;
+                session.access_expire = token.access_expire;
                 session.error = token.error
             }
-            return session
+            return session;
         }
     }
 }
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST }
