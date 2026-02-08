@@ -19,6 +19,13 @@ const AdminTracksPage = async ({
     const current = Number(resolvedSearchParams.current ?? 1);
     const pageSize = Number(resolvedSearchParams.pageSize ?? 8);
 
+    const defaultMeta = {
+        current: 1,
+        pageSize: 8,
+        pages: 0,
+        total: 0,
+    }
+
     const getTrack = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks`,
         method: 'GET',
@@ -35,7 +42,7 @@ const AdminTracksPage = async ({
         <>
             <AdminTracks
                 tracks={getTrack.data?.result ?? []}
-                meta={getTrack.data!.meta}
+                meta={getTrack.data?.meta ?? defaultMeta}
                 access_token={session?.access_token ?? ''}
             />
         </>

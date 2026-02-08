@@ -19,6 +19,13 @@ const AdminUsersPage = async ({
     const current = Number(resolvedSearchParams.current ?? 1);
     const pageSize = Number(resolvedSearchParams.pageSize ?? 8);
 
+    const defaultMeta = {
+        current: 1,
+        pageSize: 8,
+        pages: 0,
+        total: 0,
+    }
+
     const getUser = await sendRequest<IBackendRes<IModelPaginate<IUser>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users`,
         method: 'GET',
@@ -31,11 +38,14 @@ const AdminUsersPage = async ({
         },
     });
 
+    console.log('getUser: ', getUser)
+
+
     return (
         <>
             <AdminUsers
                 users={getUser.data?.result ?? []}
-                meta={getUser.data!.meta}
+                meta={getUser.data?.meta ?? defaultMeta}
                 access_token={session?.access_token ?? ''}
             />
         </>

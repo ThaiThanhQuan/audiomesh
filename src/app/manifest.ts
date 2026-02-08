@@ -2,41 +2,24 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        "name": "Audiomesh – Discover, Stream & Share Music",
-        "short_name": "Audiomesh",
-        "description": "Listen to unlimited music on Audiomesh. Discover new tracks and share your sound with the world.",
-        "icons": [
+        name: 'Audiomesh – Discover, Stream & Share Music',
+        short_name: 'AudioMesh',
+        description: 'Stream and discover music online for free with AudioMesh.',
+        start_url: '/',
+        display: 'standalone',
+        background_color: '#000000',
+        theme_color: '#000000',
+        icons: [
             {
-                "src": "https://salt.tikicdn.com/ts/upload/2f/51/80/5643672027a54bfa593300f53c91c12a.png",
-                "sizes": "192x192",
-                "type": "image/png",
+                src: '/audiomesh.png',
+                sizes: '192x192',
+                type: 'image/png',
             },
             {
-                "src": "https://salt.tikicdn.com/ts/upload/2f/51/80/5643672027a54bfa593300f53c91c12a.png",
-                "sizes": "512x512",
-                "type": "image/png",
-            }
+                src: '/audiomesh.png',
+                sizes: '512x512',
+                type: 'image/png',
+            },
         ],
-        "theme_color": "#1A94FF",
-        "background_color": "#1A94FF",
-        "start_url": "/",
-        "display": "standalone",
-        "orientation": "portrait",
-        "related_applications": [
-            {
-                "platform": "play",
-                "url": "https://play.google.com/store/apps/details?id=vn.tiki.app.tikiandroid",
-                "id": "vn.tiki.app.tikiandroid"
-            },
-            {
-                "platform": "itunes",
-                "url": "https://apps.apple.com/vn/app/tiki-shopping-fast-shipping/id958100553"
-            },
-            {
-                "platform": "webapp",
-                "url": "https://tiki.vn/manifest.json"
-            }
-        ],
-        "scope": "/"
     }
 }

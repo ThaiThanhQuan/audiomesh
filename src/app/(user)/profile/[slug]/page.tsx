@@ -28,7 +28,6 @@ const ProfilePage = async ({ params, searchParams }: {
         }
     })
 
-
     return (
         <Container sx={{ my: 5 }}>
             <ProfileTrack

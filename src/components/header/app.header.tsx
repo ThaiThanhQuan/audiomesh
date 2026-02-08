@@ -36,6 +36,7 @@ const Search = styled('div')(({ theme }) => ({
     width: '100%',
     [theme.breakpoints.up('xs')]: {
         marginLeft: '5px',
+        width: '100%',
         // display: 'none'
     },
     [theme.breakpoints.up('sm')]: {
@@ -57,8 +58,9 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
+    width: '100%',
     '& .MuiInputBase-input': {
-        paddingLeft: '30px',
+        paddingLeft: '35px',
         width: '100%',
     },
 }));

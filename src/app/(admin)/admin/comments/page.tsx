@@ -19,6 +19,14 @@ const AdminCommentPage = async ({
     const current = Number(resolvedSearchParams.current ?? 1);
     const pageSize = Number(resolvedSearchParams.pageSize ?? 8);
 
+    const defaultMeta = {
+        current: 1,
+        pageSize: 8,
+        pages: 0,
+        total: 0,
+    }
+
+
     const getComment = await sendRequest<IBackendRes<IModelPaginate<IComment>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments`,
         method: 'GET',
@@ -35,7 +43,7 @@ const AdminCommentPage = async ({
         <>
             <AdminComments
                 comments={getComment.data?.result ?? []}
-                meta={getComment.data!.meta}
+                meta={getComment.data?.meta ?? defaultMeta}
                 access_token={session?.access_token ?? ''}
             />
         </>
