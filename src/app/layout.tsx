@@ -8,6 +8,10 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Audiomesh – Discover, Stream & Share Music',
   description: 'Listen to unlimited music on Audiomesh. Discover new tracks and share your sound with the world.',
+
+  verification: {
+    google: 'M0DKQUUoJWMePueLYx0nBFyltv59f99uTgHpdUqISlM',
+  },
 }
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
