@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/admin', '/admin/users', '/admin/tracks', '/admin/comments'],
         },
-        sitemap: 'http://localhost:3000//sitemap.xml',
+        sitemap: 'https://audiomesh.vercel.app/sitemap.xml',
     }
 }

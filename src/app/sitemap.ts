@@ -4,19 +4,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     return [
         {
-            url: 'http://localhost:3000/track/upload',
+            url: 'https://audiomesh.vercel.app/track/upload',
             lastModified: new Date(),
             changeFrequency: 'daily',
             priority: 1,
         },
         {
-            url: 'http://localhost:3000/like',
+            url: 'https://audiomesh.vercel.app/like',
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.8,
         },
         {
-            url: 'http://localhost:3000/playlist',
+            url: 'https://audiomesh.vercel.app/playlist',
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.5,
