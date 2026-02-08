@@ -3,9 +3,8 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
-                protocol: 'http',
-                hostname: 'localhost',
-                port: '8000',
+                protocol: 'https',
+                hostname: 'backend-8000-audiomesh.onrender.com',
                 pathname: '/images/**',
             },
         ],

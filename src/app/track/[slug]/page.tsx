@@ -36,14 +36,6 @@ export async function generateMetadata(
     }
 }
 
-export async function generateStaticParams() {
-    return [
-        { slug: 'hen-gap-em-duoi-anh-trang-6978327c208eff5952fe3a7a.html' },
-        { slug: 'chi-mot-dem-nua-thoi-69783449208eff5952fe3ade.htmll' },
-        { slug: 'ngay-buon-thang-nho-nam-thuong..-69783545208eff5952fe3af0.html' }
-    ]
-}
-
 const DetailTrackPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params
 

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import MainSlider from "@/components/main/main.slider";
 import { Container } from "@mui/material";
 import { sendRequest } from "@/utils/api";
