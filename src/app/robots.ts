@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/admin', '/admin/users', '/admin/tracks', '/admin/comments'],
         },
-        sitemap: 'https://audiomesh-git-main-quan-thais-projects.vercel.app/sitemap.xml',
+        sitemap: 'https://audiomesh.vercel.app/sitemap.xml',
     }
 }

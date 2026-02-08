@@ -5,7 +5,7 @@ import Script from "next/script";
 const schema = {
   "@type": "WebSite",
   "name": "AudioMesh",
-  "url": "https://audiomesh-git-main-quan-thais-projects.vercel.app/",
+  "url": "https://audiomesh.vercel.app/",
   "description": "Stream and discover music online for free with AudioMesh.",
 }
 
