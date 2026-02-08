@@ -6,7 +6,7 @@ const schema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "AudioMesh",
-  "url": "http://localhost:3000/",
+  "url": "https://audiomesh.vercel.app/",
   "description": "Stream and discover music online for free with AudioMesh.",
 }
 
