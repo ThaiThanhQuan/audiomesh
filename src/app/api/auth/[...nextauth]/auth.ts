@@ -12,12 +12,10 @@ async function refreshAccessToken(token: JWT) {
     const res = await sendRequest<IBackendRes<JWT>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh`,
         method: "POST",
-        body: { refresh_token: token?.refresh_token + "abc" }
+        body: { refresh_token: token?.refresh_token }
     })
 
     if (res.data) {
-        console.log(">>> check old token: ", token.access_token);
-        console.log(">>> check new token: ", res.data?.access_token)
 
         return {
             ...token,
